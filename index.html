@@ -27,19 +27,11 @@
   --radius: 16px;
   --radius-lg: 24px;
 }
-html { height: 100%; }
-body {
-  height: 100%; width: 100%;
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
-  position: relative;
-}
+html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); }
 
 /* ── PAGE SYSTEM ── */
-.page { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-.page.active { display: block; }
+.page { display: none; width: 100%; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.page.active { display: block; width: 100%; }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
@@ -284,8 +276,8 @@ body {
 ══════════════════════════════════ */
 #page-intro { background: var(--bg); }
 .intro-header {
-  background: linear-gradient(135deg, var(--teal-dark) 0%, #016875 100%);
-  padding: 56px 24px 40px;
+  background: var(--teal-dark);
+  padding: 56px 24px 32px;
   border-radius: 0 0 32px 32px;
 }
 .intro-header h1 { font-size: 26px; font-weight: 700; color: white; margin-bottom: 8px; }
@@ -833,6 +825,16 @@ body {
       </select>
     </div>
 
+    <!-- 居住區域 -->
+    <div class="form-field">
+      <label>居住區域</label>
+      <select id="profileDistrict">
+        <option value="">請選擇區域</option>
+        <option>區域一</option>
+        <option>區域二</option>
+        <option>區域三</option>
+      </select>
+    </div>
     <!-- 出生年份 -->
     <div class="form-field">
       <label id="txt-birthYearLabel">出生年份</label>
@@ -876,7 +878,7 @@ body {
 <div id="page-intro" class="page">
   <div class="intro-header">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <span style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;" id="txt-introStep">步驟 2／4</span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;">步驟 2／4</span>
       <div class="step-dots">
         <div class="step-dot done"></div>
         <div class="step-dot active"></div>
@@ -886,54 +888,137 @@ body {
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50%"></div></div>
     <div style="margin-top:20px;">
-      <h1 id="txt-introH1">您的任務說明</h1>
-      <p id="txt-introP">成為 Worldpanel 夥伴，只需要做 4 件簡單的事</p>
+      <h1 style="font-size:24px;font-weight:700;color:white;margin-bottom:8px;">歡迎加入 Worldpanel+</h1>
+      <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.7;">以下是您成為正式會員的完整流程與工作說明</p>
     </div>
   </div>
+
   <div class="intro-content">
+
+    <!-- 工作說明 -->
     <div class="intro-step">
       <div class="step-icon teal">🛒</div>
       <div class="intro-step-text">
-        <h3 id="txt-step1H">掃描商品條碼</h3>
-        <p id="txt-step1P">每次購物後，用 PanelSmart App 掃描購買商品的條碼。只需幾秒鐘！</p>
+        <h3>掃描商品條碼</h3>
+        <p>購物後用 PanelSmart App 掃描商品條碼，只需幾秒鐘</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon yellow">💰</div>
       <div class="intro-step-text">
-        <h3 id="txt-step2H">輸入價格與數量</h3>
-        <p id="txt-step2P">記錄您實際支付的金額和購買數量，幫助我們了解市場價格。</p>
+        <h3>輸入價格與數量</h3>
+        <p>記錄實際支付金額與購買數量</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon mint">🏪</div>
       <div class="intro-step-text">
-        <h3 id="txt-step3H">選擇購物場所</h3>
-        <p id="txt-step3P">選擇您在哪裡購買——超市、便利商店、量販店或網路商店。</p>
+        <h3>選擇購買通路</h3>
+        <p>選擇購買地點（便利商店、超市、量販店等）及品牌</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon dark">🎯</div>
       <div class="intro-step-text">
-        <h3 id="txt-step4H">標記促銷活動</h3>
-        <p id="txt-step4P">如果有折扣、買一送一或其他優惠，勾選對應的促銷類型。</p>
+        <h3>標記促銷活動</h3>
+        <p>記錄是否有折扣、買一送一或其他優惠活動</p>
       </div>
     </div>
-    <div class="intro-reward-banner">
-      <div class="reward-icon">🎁</div>
-      <div class="reward-text">
-        <h3 id="txt-rewardH">完成訓練可獲得 200 點！</h3>
-        <p id="txt-rewardP">點數可以兌換購物金、禮品卡及更多獎勵</p>
+
+    <!-- 加入流程時間軸 -->
+    <div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 24px rgba(1,73,82,0.1);">
+      <div style="font-size:13px;font-weight:700;color:#01A7B7;letter-spacing:1px;margin-bottom:16px;">🗺️ 加入流程與點數</div>
+
+      <div style="display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:34px;height:34px;border-radius:50%;background:#014952;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">✓</div>
+          <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
+        </div>
+        <div style="padding-top:5px;">
+          <div style="font-size:15px;font-weight:700;color:#014952;">個人資料填寫</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">已完成 ✅</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:34px;height:34px;border-radius:50%;background:#01A7B7;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">2</div>
+          <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
+        </div>
+        <div style="padding-top:5px;">
+          <div style="font-size:15px;font-weight:700;color:#014952;">訓練任務（5 關卡）</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">掃碼 +10 · 價格 +10 · 通路 +10 · 類別 +10 · 完成 +50 = <strong style="color:#014952;">+90 點</strong></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:34px;height:34px;border-radius:50%;background:rgba(1,73,82,0.1);color:#4A7A82;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">3</div>
+          <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
+        </div>
+        <div style="padding-top:5px;">
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;">背景問卷 Survey 1</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">訓練後 2 天發送 · 約 5 分鐘 · <strong>+100 點</strong></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:34px;height:34px;border-radius:50%;background:rgba(1,73,82,0.1);color:#4A7A82;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">4</div>
+          <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
+        </div>
+        <div style="padding-top:5px;">
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;">深度問卷 Survey 2</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">Survey 1 後 2 天發送 · 約 8 分鐘 · <strong>+100 點</strong></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,213,40,0.2);color:#014952;display:flex;align-items:center;justify-content:center;font-size:18px;">🎖️</div>
+        </div>
+        <div style="padding-top:5px;">
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;">正式會員 Welcome Points</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">2 週內完成 2 次合格掃描 · 額外歡迎點數入帳</div>
+        </div>
       </div>
     </div>
+
+    <!-- 點數兌換預覽 -->
+    <div style="background:linear-gradient(135deg,#FFD528,#ffc107);border-radius:20px;padding:20px;">
+      <div style="font-size:13px;font-weight:700;color:rgba(1,73,82,0.7);letter-spacing:1px;margin-bottom:14px;">🎁 點數可兌換</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:rgba(255,255,255,0.6);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:4px;">🏪</div>
+          <div style="font-size:13px;font-weight:700;color:#014952;">7-11 購物金</div>
+          <div style="font-size:12px;color:rgba(1,73,82,0.6);margin-top:2px;">200 點起</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:4px;">☕</div>
+          <div style="font-size:13px;font-weight:700;color:#014952;">咖啡兌換券</div>
+          <div style="font-size:12px;color:rgba(1,73,82,0.6);margin-top:2px;">500 點起</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:4px;">🎬</div>
+          <div style="font-size:13px;font-weight:700;color:#014952;">電影票</div>
+          <div style="font-size:12px;color:rgba(1,73,82,0.6);margin-top:2px;">1,000 點起</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:4px;">💳</div>
+          <div style="font-size:13px;font-weight:700;color:#014952;">購物金 200元</div>
+          <div style="font-size:12px;color:rgba(1,73,82,0.6);margin-top:2px;">2,000 點起</div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
   <div class="intro-footer">
-    <button class="btn btn-primary" onclick="goToTraining()" id="txt-startTraining">開始訓練任務 🎯</button>
-    <button class="btn btn-ghost" onclick="showPage('page-profile')" style="margin-top:8px;color:var(--text-muted);width:100%;text-align:center;" id="txt-backProfile">← 返回</button>
+    <button class="btn btn-primary" onclick="goToTraining()">開始訓練任務 🎯</button>
+    <button class="btn btn-ghost" onclick="showPage('page-profile')" style="margin-top:8px;color:var(--text-muted);width:100%;text-align:center;">← 返回</button>
   </div>
 </div>
 
-<!-- ══ PAGE 4: TRAINING ══ -->
 <div id="page-training" class="page">
   <div class="training-header">
     <div class="header-top">
