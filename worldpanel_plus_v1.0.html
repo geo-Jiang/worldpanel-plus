@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Worldpanel Plus">
+<meta name="theme-color" content="#014952">
+<title>Worldpanel Plus</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal-dark: #014952;
+  --teal-mid: #01A7B7;
+  --teal-light: #2EEFEE;
+  --teal-mint: #0CEFB7;
+  --yellow: #FFD528;
+  --white: #FFFFFF;
+  --bg: #F0F7F8;
+  --text: #012830;
+  --text-muted: #4A7A82;
+  --border: rgba(1,73,82,0.12);
+  --shadow: 0 4px 24px rgba(1,73,82,0.12);
+  --radius: 16px;
+  --radius-lg: 24px;
+}
+html { height: 100%; }
+body {
+  height: 100%; width: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── PAGE SYSTEM ── */
+.page { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.page.active { display: block; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--teal-mid); border-radius: 4px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+@keyframes scanLine { 0% { top: 10%; } 100% { top: 85%; } }
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity:1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity:0; }
+}
+@keyframes shine {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(300%) skewX(-15deg); }
+}
+
+/* ══════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════ */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 18px 24px;
+  border: none; border-radius: var(--radius); cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 18px; font-weight: 700;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--yellow);
+  color: var(--teal-dark);
+  box-shadow: 0 4px 16px rgba(255,213,40,0.4);
+}
+.btn-primary:hover { background: #ffc800; box-shadow: 0 6px 20px rgba(255,213,40,0.5); }
+.btn-secondary {
+  background: var(--white);
+  color: var(--teal-dark);
+  border: 2px solid var(--border);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.5);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  width: auto; padding: 10px 16px;
+  font-size: 15px; font-weight: 500;
+}
+
+.lang-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 999;
+  background: rgba(1,73,82,0.85); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white; border-radius: 20px; padding: 6px 14px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-toggle:hover { background: var(--teal-mid); }
+
+.progress-bar-wrap {
+  width: 100%; height: 6px;
+  background: rgba(1,73,82,0.1);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--teal-mid), var(--teal-light));
+  transition: width 0.4s ease;
+}
+
+.step-dots {
+  display: flex; gap: 8px; justify-content: center; padding: 12px 0;
+}
+.step-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); transition: all 0.3s;
+}
+.step-dot.active { background: var(--teal-mid); width: 24px; border-radius: 4px; }
+.step-dot.done { background: var(--teal-mint); }
+
+.card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 24px; box-shadow: var(--shadow);
+}
+
+.points-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--yellow); color: var(--teal-dark);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 16px; font-weight: 700;
+}
+
+/* ══════════════════════════════════
+   PAGE 1 — WELCOME / LOGIN
+══════════════════════════════════ */
+#page-welcome {
+  background: var(--teal-dark);
+  position: relative; overflow: hidden;
+}
+#page-welcome::before {
+  content: '';
+  position: absolute; top: -120px; right: -120px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(1,167,183,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+#page-welcome::after {
+  content: '';
+  position: absolute; bottom: -80px; left: -80px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(46,239,238,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.welcome-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
+  min-height: 100vh; padding: 60px 28px 48px;
+}
+.welcome-logo-area {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; animation: fadeUp 0.7s ease both;
+}
+.welcome-logo-area svg { width: 72px; height: 72px; }
+.welcome-logo-text {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.welcome-logo-text .brand-name {
+  font-size: 30px; font-weight: 900; color: var(--white);
+  letter-spacing: -0.5px;
+}
+.welcome-logo-text .brand-sub {
+  font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 3px;
+  font-weight: 400;
+}
+.welcome-tagline {
+  text-align: center; animation: fadeUp 0.7s 0.15s ease both;
+}
+.welcome-tagline h2 {
+  font-size: 26px; font-weight: 700; color: var(--white);
+  line-height: 1.4; margin-bottom: 12px;
+}
+.welcome-tagline p {
+  font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7;
+}
+.welcome-actions {
+  width: 100%; display: flex; flex-direction: column; gap: 12px;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+.welcome-actions .btn-primary { font-size: 19px; }
+.login-form {
+  display: none; width: 100%;
+  flex-direction: column; gap: 14px;
+  animation: fadeUp 0.4s ease both;
+}
+.login-form.show { display: flex; }
+.input-group {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.input-group label {
+  font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.7);
+}
+.input-group input {
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 12px; padding: 16px 18px;
+  font-size: 18px; color: white; width: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
+  outline: none; transition: border-color 0.2s;
+}
+.input-group input::placeholder { color: rgba(255,255,255,0.35); }
+.input-group input:focus { border-color: var(--teal-light); }
+.otp-row { display: flex; gap: 8px; }
+.otp-row input { flex: 1; text-align: center; font-size: 24px; font-weight: 700; padding: 14px 8px; }
+.demo-hint {
+  text-align: center; font-size: 13px; color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+}
+
+/* ══════════════════════════════════
+   PAGE 2 — PROFILE SETUP
+══════════════════════════════════ */
+#page-profile {
+  background: var(--bg);
+}
+.profile-header {
+  background: var(--teal-dark); padding: 56px 24px 32px;
+  border-radius: 0 0 32px 32px;
+}
+.profile-header h1 { font-size: 26px; font-weight: 700; color: white; margin-bottom: 6px; }
+.profile-header p { font-size: 15px; color: rgba(255,255,255,0.65); }
+.profile-form { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 8px; }
+.form-field label {
+  font-size: 15px; font-weight: 700; color: var(--teal-dark);
+}
+.form-field input, .form-field select, .form-field textarea {
+  background: var(--white); border: 2px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  font-size: 18px; color: var(--text); width: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
+  outline: none; transition: border-color 0.2s;
+  appearance: none;
+}
+.form-field input:focus, .form-field select:focus { border-color: var(--teal-mid); }
+.household-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.hh-btn {
+  aspect-ratio: 1; border: 2px solid var(--border);
+  border-radius: 12px; background: var(--white);
+  font-size: 20px; font-weight: 700; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+}
+.hh-btn .hh-label { font-size: 11px; font-weight: 500; }
+.hh-btn.selected {
+  background: var(--teal-dark); color: white;
+  border-color: var(--teal-dark);
+}
+.store-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.store-chip {
+  padding: 10px 18px; border-radius: 24px;
+  border: 2px solid var(--border); background: var(--white);
+  font-size: 15px; font-weight: 600; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.store-chip.selected {
+  background: var(--teal-dark); color: white; border-color: var(--teal-dark);
+}
+.profile-footer { padding: 0 24px 40px; }
+
+/* ══════════════════════════════════
+   PAGE 3 — JOB INTRO
+══════════════════════════════════ */
+#page-intro { background: var(--bg); }
+.intro-header {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, #016875 100%);
+  padding: 56px 24px 40px;
+  border-radius: 0 0 32px 32px;
+}
+.intro-header h1 { font-size: 26px; font-weight: 700; color: white; margin-bottom: 8px; }
+.intro-header p { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+.intro-content { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.intro-step {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 20px; display: flex; align-items: flex-start; gap: 16px;
+  box-shadow: var(--shadow);
+}
+.step-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+}
+.step-icon.teal { background: rgba(1,167,183,0.12); }
+.step-icon.yellow { background: rgba(255,213,40,0.18); }
+.step-icon.mint { background: rgba(12,239,183,0.12); }
+.step-icon.dark { background: rgba(1,73,82,0.1); }
+.intro-step-text h3 { font-size: 17px; font-weight: 700; color: var(--teal-dark); margin-bottom: 4px; }
+.intro-step-text p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+.intro-reward-banner {
+  background: linear-gradient(135deg, var(--yellow) 0%, #ffc107 100%);
+  border-radius: var(--radius-lg); padding: 20px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.reward-icon { font-size: 36px; }
+.reward-text h3 { font-size: 18px; font-weight: 700; color: var(--teal-dark); }
+.reward-text p { font-size: 14px; color: rgba(1,73,82,0.7); margin-top: 2px; }
+.intro-footer { padding: 8px 24px 40px; }
+
+/* ══════════════════════════════════
+   PAGE 4 — TRAINING MISSIONS
+══════════════════════════════════ */
+#page-training { background: var(--bg); }
+.training-header {
+  background: var(--teal-dark); padding: 56px 24px 24px;
+}
+.training-header .header-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.training-header h1 { font-size: 22px; font-weight: 700; color: white; }
+.training-header .step-info { font-size: 14px; color: rgba(255,255,255,0.6); }
+.training-content { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+/* Mission cards */
+.mission-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 24px; box-shadow: var(--shadow);
+  display: none; animation: fadeUp 0.4s ease both;
+}
+.mission-card.active { display: flex; flex-direction: column; gap: 20px; }
+.mission-title { font-size: 20px; font-weight: 700; color: var(--teal-dark); }
+.mission-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+.mission-pts {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,213,40,0.15); color: var(--teal-dark);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 14px; font-weight: 700;
+}
+
+/* Barcode scanner simulation */
+.scanner-area {
+  background: var(--teal-dark); border-radius: 16px;
+  aspect-ratio: 1; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.scanner-corners::before, .scanner-corners::after,
+.scanner-corners .c3::before, .scanner-corners .c3::after {
+  content: ''; position: absolute;
+  width: 24px; height: 24px;
+  border-color: var(--teal-light); border-style: solid;
+}
+.scanner-corners::before { top: 20px; left: 20px; border-width: 3px 0 0 3px; }
+.scanner-corners::after { top: 20px; right: 20px; border-width: 3px 3px 0 0; }
+.scanner-corners .c3::before { bottom: 20px; left: 20px; border-width: 0 0 3px 3px; }
+.scanner-corners .c3::after { bottom: 20px; right: 20px; border-width: 0 3px 3px 0; }
+.scan-line {
+  position: absolute; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal-light), transparent);
+  animation: scanLine 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 8px var(--teal-light);
+}
+.barcode-icon { font-size: 64px; opacity: 0.3; }
+.scanner-tap-hint {
+  position: absolute; bottom: 16px; left: 0; right: 0;
+  text-align: center; font-size: 13px; color: rgba(255,255,255,0.6);
+  font-weight: 600; letter-spacing: 1px;
+}
+
+/* Price input */
+.price-inputs { display: flex; gap: 12px; }
+.price-inputs .form-field { flex: 1; }
+.price-inputs input {
+  background: var(--bg); border: 2px solid var(--border);
+  border-radius: 12px; padding: 16px; font-size: 20px; font-weight: 700;
+  color: var(--text); width: 100%; text-align: center;
+  font-family: 'Noto Sans TC', sans-serif; outline: none;
+  transition: border-color 0.2s;
+}
+.price-inputs input:focus { border-color: var(--teal-mid); }
+
+/* Channel / Category grid */
+.option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.option-btn {
+  padding: 16px 12px; border: 2px solid var(--border);
+  border-radius: 14px; background: var(--white);
+  font-size: 15px; font-weight: 600; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.option-btn .opt-icon { font-size: 28px; }
+.option-btn.selected {
+  background: var(--teal-dark); color: white; border-color: var(--teal-dark);
+}
+
+/* Promo checkboxes */
+.promo-list { display: flex; flex-direction: column; gap: 10px; }
+.promo-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; border-radius: 14px;
+  border: 2px solid var(--border); background: var(--white);
+  cursor: pointer; transition: all 0.2s;
+}
+.promo-item.selected { border-color: var(--teal-mid); background: rgba(1,167,183,0.06); }
+.promo-check {
+  width: 24px; height: 24px; border-radius: 6px;
+  border: 2px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; font-size: 14px;
+}
+.promo-item.selected .promo-check {
+  background: var(--teal-mid); border-color: var(--teal-mid); color: white;
+}
+.promo-text { font-size: 16px; font-weight: 600; color: var(--text); }
+
+.training-footer { padding: 8px 24px 40px; }
+
+/* ══════════════════════════════════
+   PAGE 5 — HOME DASHBOARD
+══════════════════════════════════ */
+#page-home { background: var(--bg); padding-bottom: 100px; }
+.home-header {
+  background: var(--teal-dark); padding: 56px 24px 24px;
+  border-radius: 0 0 32px 32px;
+}
+.home-header-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 24px;
+}
+.home-greeting h1 { font-size: 24px; font-weight: 700; color: white; margin-bottom: 4px; }
+.home-greeting p { font-size: 14px; color: rgba(255,255,255,0.6); }
+.notification-bell {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(255,255,255,0.1); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; position: relative;
+}
+.notif-dot {
+  position: absolute; top: 8px; right: 8px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--yellow); border: 2px solid var(--teal-dark);
+}
+/* Points card */
+.points-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-lg); padding: 20px 24px;
+}
+.pts-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+.pts-amount { font-size: 42px; font-weight: 900; color: var(--yellow); line-height: 1; margin-bottom: 4px; }
+.pts-sub { font-size: 13px; color: rgba(255,255,255,0.5); }
+.pts-bar-wrap { margin-top: 14px; }
+.pts-bar-label { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.pts-bar-label span { font-size: 12px; color: rgba(255,255,255,0.5); }
+.pts-bar-label strong { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 700; }
+
+.home-content { padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+.section-title {
+  font-size: 18px; font-weight: 700; color: var(--teal-dark); margin-bottom: 12px;
+}
+
+/* Status card */
+.status-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 20px; box-shadow: var(--shadow);
+}
+.status-steps { display: flex; flex-direction: column; gap: 12px; }
+.status-step {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 12px;
+  background: rgba(1,73,82,0.04);
+}
+.status-step.done { background: rgba(12,239,183,0.08); }
+.status-step.active-step { background: rgba(1,167,183,0.08); }
+.status-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.status-step.done .status-icon { background: var(--teal-mint); }
+.status-step.active-step .status-icon { background: var(--teal-mid); }
+.status-step:not(.done):not(.active-step) .status-icon { background: var(--border); }
+.status-step-text { flex: 1; }
+.status-step-text h4 { font-size: 15px; font-weight: 700; color: var(--text); }
+.status-step-text p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.status-pts { font-size: 14px; font-weight: 700; color: var(--teal-dark); }
+
+/* Survey cards */
+.survey-cards { display: flex; flex-direction: column; gap: 12px; }
+.survey-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 18px; display: flex; gap: 14px; align-items: center;
+  box-shadow: var(--shadow); cursor: pointer;
+  transition: transform 0.2s;
+}
+.survey-card:active { transform: scale(0.98); }
+.survey-badge {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; font-size: 26px;
+  flex-shrink: 0;
+}
+.survey-info { flex: 1; }
+.survey-info h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.survey-info p { font-size: 13px; color: var(--text-muted); }
+.survey-pts { font-size: 15px; font-weight: 700; color: var(--teal-dark); white-space: nowrap; }
+
+/* Bottom nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--white); border-top: 1px solid var(--border);
+  display: flex; padding: 8px 0 24px; z-index: 100;
+  box-shadow: 0 -4px 20px rgba(1,73,82,0.08);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 0; cursor: pointer; border: none; background: none;
+  transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+}
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+.nav-item.active .nav-label { color: var(--teal-mid); }
+.nav-item.active .nav-icon { filter: none; }
+
+/* ══════════════════════════════════
+   PAGE 6 — WALLET / REWARDS
+══════════════════════════════════ */
+#page-wallet { background: var(--bg); padding-bottom: 100px; }
+.wallet-header {
+  background: var(--teal-dark); padding: 56px 24px 32px;
+  border-radius: 0 0 32px 32px;
+}
+.wallet-header h1 { font-size: 26px; font-weight: 700; color: white; margin-bottom: 20px; }
+.wallet-big-pts {
+  text-align: center; padding: 24px;
+  background: rgba(255,255,255,0.1); border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.wallet-pts-num { font-size: 56px; font-weight: 900; color: var(--yellow); line-height: 1; }
+.wallet-pts-label { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 6px; font-weight: 600; }
+.wallet-content { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+.rewards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.reward-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 18px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 10px;
+  cursor: pointer; transition: transform 0.2s; position: relative;
+  overflow: hidden;
+}
+.reward-card:active { transform: scale(0.97); }
+.reward-card.locked { opacity: 0.55; }
+.reward-card-img { font-size: 40px; text-align: center; }
+.reward-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.reward-card-pts { font-size: 13px; font-weight: 700; color: var(--teal-mid); }
+.reward-lock {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(1,73,82,0.1); border-radius: 50%;
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.reward-card::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shine 3s ease infinite;
+}
+.reward-card.locked::after { display: none; }
+
+/* ══════════════════════════════════
+   PAGE 7 — PROFILE PAGE
+══════════════════════════════════ */
+#page-my { background: var(--bg); padding-bottom: 100px; }
+.my-header {
+  background: var(--teal-dark); padding: 56px 24px 40px;
+  border-radius: 0 0 32px 32px; text-align: center;
+}
+.my-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-mid), var(--teal-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin: 0 auto 14px;
+  border: 3px solid rgba(255,255,255,0.3);
+}
+.my-name { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; }
+.my-id { font-size: 13px; color: rgba(255,255,255,0.5); }
+.my-status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--yellow); color: var(--teal-dark);
+  border-radius: 20px; padding: 6px 16px; margin-top: 12px;
+  font-size: 14px; font-weight: 700;
+}
+.my-content { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.my-menu-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
+.my-menu-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; cursor: pointer;
+  border-bottom: 1px solid var(--border); transition: background 0.2s;
+}
+.my-menu-item:last-child { border-bottom: none; }
+.my-menu-item:active { background: var(--bg); }
+.menu-icon { font-size: 22px; width: 36px; text-align: center; }
+.menu-text { flex: 1; }
+.menu-text h4 { font-size: 16px; font-weight: 700; color: var(--text); }
+.menu-text p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.menu-arrow { font-size: 16px; color: var(--text-muted); }
+
+/* AI Assistant */
+.ai-btn {
+  background: linear-gradient(135deg, var(--teal-dark), #016875);
+  border-radius: var(--radius-lg); padding: 20px 24px;
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer; box-shadow: var(--shadow);
+  border: none; width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.ai-icon { font-size: 36px; }
+.ai-text { text-align: left; }
+.ai-text h3 { font-size: 17px; font-weight: 700; color: white; }
+.ai-text p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+/* AI Chat Modal */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(1,40,48,0.7); backdrop-filter: blur(4px);
+  align-items: flex-end;
+}
+.modal-overlay.show { display: flex; animation: fadeIn 0.2s ease both; }
+.modal-sheet {
+  background: var(--white); border-radius: 24px 24px 0 0;
+  width: 100%; max-height: 85vh; display: flex; flex-direction: column;
+  animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-handle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: var(--border); margin: 12px auto 0;
+}
+.modal-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.modal-header h3 { flex: 1; font-size: 17px; font-weight: 700; color: var(--text); }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg); border: none; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.chat-msg {
+  max-width: 80%; padding: 12px 16px; border-radius: 16px;
+  font-size: 15px; line-height: 1.6; animation: fadeUp 0.3s ease both;
+}
+.chat-msg.bot {
+  background: var(--bg); color: var(--text); border-bottom-left-radius: 4px;
+  align-self: flex-start;
+}
+.chat-msg.user {
+  background: var(--teal-dark); color: white; border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+.chat-msg.typing { color: var(--text-muted); font-style: italic; }
+.chat-input-area {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: center;
+}
+.chat-input {
+  flex: 1; padding: 12px 16px; border-radius: 24px;
+  border: 2px solid var(--border); font-size: 16px;
+  font-family: 'Noto Sans TC', sans-serif; outline: none;
+  transition: border-color 0.2s; background: var(--bg);
+}
+.chat-input:focus { border-color: var(--teal-mid); }
+.chat-send {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--teal-dark); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: transform 0.2s;
+}
+.chat-send:active { transform: scale(0.9); }
+
+/* Quick questions */
+.quick-qs { padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.quick-q {
+  padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--teal-mid);
+  background: rgba(1,167,183,0.06); color: var(--teal-dark);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.quick-q:active { background: var(--teal-mid); color: white; }
+
+/* Confetti */
+.confetti-container {
+  position: fixed; inset: 0; pointer-events: none; z-index: 300; overflow: hidden;
+}
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px;
+  animation: confettiFall linear both;
+}
+
+/* Completion overlay */
+.completion-overlay {
+  display: none; position: fixed; inset: 0; z-index: 250;
+  background: rgba(1,40,48,0.85); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.completion-overlay.show { display: flex; animation: fadeIn 0.3s ease both; }
+.completion-card {
+  background: var(--white); border-radius: 28px;
+  padding: 40px 32px; text-align: center; width: 100%; max-width: 360px;
+  animation: fadeUp 0.5s 0.2s ease both;
+}
+.completion-emoji { font-size: 72px; margin-bottom: 16px; display: block; animation: pulse 1s ease infinite; }
+.completion-card h2 { font-size: 26px; font-weight: 700; color: var(--teal-dark); margin-bottom: 8px; }
+.completion-card p { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
+.completion-pts {
+  background: var(--yellow); border-radius: 16px; padding: 16px;
+  margin-bottom: 24px;
+}
+.completion-pts .big-pts { font-size: 40px; font-weight: 900; color: var(--teal-dark); }
+.completion-pts .pts-word { font-size: 14px; font-weight: 600; color: rgba(1,73,82,0.7); }
+
+</style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<button class="lang-toggle" id="langToggle" onclick="toggleLang()">EN</button>
+
+<!-- ══ PAGE 1: WELCOME ══ -->
+<div id="page-welcome" class="page active">
+  <div class="welcome-inner">
+    <div class="welcome-logo-area">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCADYAzYDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD40ooor60/HAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooqaO0nlXckMjr6qhIoBtLchopzo0bbXUq3owwabQAUUUUAFFFFABRU6WNzIoZLeV1PdUJ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UVWbc5La+iXyCiiivPPqwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvqj/AIJveONJ8G/tEJDq1ylmmr6dLYW8sjBVM5dGVST0ztIHvgd6+V6cjtG6srFWU5DA4INRUh7SLi+p0Yes8PVjVSvZn9DTOqIXZgqgZLE8AV+LX7bvjrSfiF+0n4q1PRLhbzT4mis0uUOVkaONVcr6jcGGe+M1wN58c/iJqGhf2Lc+OPEE+lFdhtJNRlKFem0jdyPbpXDk5OT1rjw+G9jJybuezmOarG01TjGyvcSiiiu8+eCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK0fDlhHqniDTLKbPlXFzHE+3rhmAP86NhpXdii0MixhyjBG6MRwfxplful40/Zz8A+Nfhq/gifw7Y2ejrbiG1NrAqSWpUYV42xkMPXvznOTX45fHj4H6/8AfiBe+GdcjMioS9nfqhWO8hJ+WReuPcZODkVyUMTGs2tmexjssqYJKTd0+vZnnVPEMhjMgRjGDgtjj86ZX7QfDL4R+DZ/2UdH0iXw5p8tld+HVmnV7dS0kjQ7mctjO7cc7s5HGOlXWrKik2r3McDgZY1ySlayufi/RUlwgjnkQdFYgfnUddB5gUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQA6ON5XCIpdzwFUZJpZYZIHKSI0bjqrjBFfYP8AwS+8M6X4g+O+sT6lYw3smnaJJc2pnQMIpTNEm8A99rsM+9dl/wAFWPCWk6V4i8C6zZWMNrqF9Dcw3MsKBfOVDGU3Y6kbmGfQ1zOulW9lY9VYFvBvF82z2+dj4JooorpPKCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKK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8t/APjvWvhn4u03xL4evGsdW0+XzIZV5HoVI7qQSCO4NfoF4R/4Kv6M2mRL4n8E38eoKoDvpU0bxO3cgOVK/TJrSvSqKqqtNXMMBisLPCSwmJdv6ufLXjr9j74r/AAL8MWnjrXdFt4rGxuIpJlt7tJ5LYhxtMgQkbS2BlScd8V+r/gXxV4f/AGhvgza6hA63eka/pxguYgRujLptljb0ZSSK/PL9pj/gojN8Z/AGo+DvD3ht9E07UdqXV5eTCSZ4wwbYqqMLkgAnJ4zXiv7PH7VPjP8AZz1R20SdL/RLht11o14SYJD/AHlxyjf7Q/HNKdKrXgnPSSHQxmEwFdwpNypyWvr+B6Z8R/8Agm38WPDXiqS08M6fb+K9Fkk/0fUIruGBlUngSpI6kEDrjI9+1fbn7Fn7Kkv7NnhTUZdZu4L7xRrDI10bYkxQRqPliUkDdgkknHX6ZryHSP8AgrB4VksQdU8EaxBe45SznikjJ+rFT+leUfGv/gpv4p8baRcaT4J0keEbedSkmoSS+bd7T/cIwEPuMn3rOSxNZcklZHRSnleDm69OTb6Lt+H5mV/wUY+Ldj8QPjzpnh/S5luLTwygtJpVOVa5Z90gH+78qn3U1+jP7Q3/ACQn4gf9gK8/9EtX4Ui6l+1i5ZzJNv8AMLuclmznJPfmvuf4nf8ABS5PH3wV1PwvD4UntPEerWLWN3eNMv2aMOu13jA+Yk5OAcYz1NaVcPK1OMOhz4PMad8RUrOznt+On5HwlRRRXpnyoUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB774s/a31TWvgFY/CbR/D1h4b0GERi4nspHMt0FO5t+Tj53+Zv8ACvAqKKmMIw+E2qVZ1mnN3srfIKKKKoxCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//2Q==" 
+           style="width:260px;object-fit:contain;border-radius:12px;" 
+           alt="Worldpanel by Numerator">
+      <div style="margin-top:10px;text-align:center;">
+        <span style="font-size:26px;font-weight:900;color:var(--teal-light);letter-spacing:2px;">Plus+</span>
+      </div>
+    </div>
+
+    <div class="welcome-tagline">
+      <h2 id="txt-welcomeH2">歡迎加入<br>消費者調查夥伴</h2>
+      <p id="txt-welcomeP">記錄您的購物，幫助品牌了解台灣消費趨勢，並賺取豐富點數獎勵！</p>
+    </div>
+
+    <div class="welcome-actions">
+      <div id="welcome-main-btns">
+        <button class="btn btn-primary" onclick="showLoginForm()" id="txt-joinBtn">🚀 立即加入</button>
+        <div style="margin-top:10px;">
+          <button class="btn btn-outline" onclick="showLoginForm('login')" id="txt-loginBtn">我已有帳號</button>
+        </div>
+        <div style="margin-top:14px; text-align:center;">
+          <button class="btn btn-ghost" onclick="demoLogin()" id="txt-demoBtn" style="color:rgba(255,255,255,0.4);font-size:14px;">👀 Demo 體驗（跳過登入）</button>
+        </div>
+      </div>
+      <div class="login-form" id="loginForm">
+        <div class="input-group">
+          <label id="txt-phoneLabel">手機號碼</label>
+          <input type="tel" id="phoneInput" placeholder="09xx-xxx-xxx" id="txt-phoneInput">
+        </div>
+        <div id="otpSection" style="display:none;">
+          <div class="input-group" style="margin-bottom:12px;">
+            <label id="txt-otpLabel">輸入驗證碼</label>
+            <div class="otp-row">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+              <input type="text" maxlength="1" class="otp-digit" oninput="otpNav(this)">
+            </div>
+          </div>
+          <p class="demo-hint" id="txt-otpHint">💡 Demo 用：輸入任意 6 碼即可</p>
+        </div>
+        <button class="btn btn-primary" onclick="handleLoginNext()" id="loginNextBtn">
+          <span id="txt-loginNext">取得驗證碼</span>
+        </button>
+        <button class="btn btn-ghost" onclick="hideLoginForm()" id="txt-backBtn" style="color:rgba(255,255,255,0.5);">← 返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE 2: PROFILE ══ -->
+<div id="page-profile" class="page">
+  <div class="profile-header">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span id="txt-profileStep" style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;">步驟 1／4</span>
+      <div class="step-dots">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:25%"></div></div>
+    <div style="margin-top:20px;">
+      <h1 id="txt-profileH1">建立您的個人資料</h1>
+      <p id="txt-profileP">完整的資料幫助我們提供更準確的調查</p>
+    </div>
+  </div>
+  <div class="profile-form">
+    <!-- 姓名 -->
+    <div class="form-field">
+      <label id="txt-nameLabel">您的姓名</label>
+      <input type="text" id="profileName" placeholder="請輸入姓名">
+    </div>
+    <!-- 居住縣市 -->
+    <div class="form-field">
+      <label id="txt-cityLabel">居住縣市</label>
+      <select id="profileCity" >
+        <option value="">請選擇縣市</option>
+        <option>台北市</option><option>新北市</option><option>桃園市</option>
+        <option>台中市</option><option>台南市</option><option>高雄市</option>
+        <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+        <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+        <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+        <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+        <option>台東縣</option><option>澎湖縣</option><option>金門縣</option>
+        <option>連江縣</option>
+      </select>
+    </div>
+
+    <!-- 出生年份 -->
+    <div class="form-field">
+      <label id="txt-birthYearLabel">出生年份</label>
+      <select id="profileBirthYear">
+        <option value="">請選擇年份</option>
+      </select>
+    </div>
+    <!-- 出生月日 -->
+    <div class="form-field">
+      <label id="txt-birthDateLabel">出生月日</label>
+      <div style="display:flex;gap:10px;">
+        <select id="profileBirthMonth" style="flex:1;" onchange="updateDays()">
+          <option value="">月</option>
+          <option value="1">1 月</option><option value="2">2 月</option>
+          <option value="3">3 月</option><option value="4">4 月</option>
+          <option value="5">5 月</option><option value="6">6 月</option>
+          <option value="7">7 月</option><option value="8">8 月</option>
+          <option value="9">9 月</option><option value="10">10 月</option>
+          <option value="11">11 月</option><option value="12">12 月</option>
+        </select>
+        <select id="profileBirthDay" style="flex:1;">
+          <option value="">日</option>
+        </select>
+      </div>
+    </div>
+    <!-- 家庭人數 - 直接輸入數字 -->
+    <div class="form-field">
+      <label id="txt-hhLabel">家庭人數（含自己）</label>
+      <input type="number" id="profileHH" min="1" max="20" placeholder="例如：3"
+        style="font-size:22px;font-weight:700;text-align:center;">
+    </div>
+
+  </div>
+  <div class="profile-footer">
+  <div class="profile-footer">
+    <button class="btn btn-primary" onclick="goToIntro()" id="txt-profileNext">下一步 →</button>
+  </div>
+</div>
+
+<!-- ══ PAGE 3: JOB INTRO ══ -->
+<div id="page-intro" class="page">
+  <div class="intro-header">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;" id="txt-introStep">步驟 2／4</span>
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50%"></div></div>
+    <div style="margin-top:20px;">
+      <h1 id="txt-introH1">您的任務說明</h1>
+      <p id="txt-introP">成為 Worldpanel 夥伴，只需要做 4 件簡單的事</p>
+    </div>
+  </div>
+  <div class="intro-content">
+    <div class="intro-step">
+      <div class="step-icon teal">🛒</div>
+      <div class="intro-step-text">
+        <h3 id="txt-step1H">掃描商品條碼</h3>
+        <p id="txt-step1P">每次購物後，用 PanelSmart App 掃描購買商品的條碼。只需幾秒鐘！</p>
+      </div>
+    </div>
+    <div class="intro-step">
+      <div class="step-icon yellow">💰</div>
+      <div class="intro-step-text">
+        <h3 id="txt-step2H">輸入價格與數量</h3>
+        <p id="txt-step2P">記錄您實際支付的金額和購買數量，幫助我們了解市場價格。</p>
+      </div>
+    </div>
+    <div class="intro-step">
+      <div class="step-icon mint">🏪</div>
+      <div class="intro-step-text">
+        <h3 id="txt-step3H">選擇購物場所</h3>
+        <p id="txt-step3P">選擇您在哪裡購買——超市、便利商店、量販店或網路商店。</p>
+      </div>
+    </div>
+    <div class="intro-step">
+      <div class="step-icon dark">🎯</div>
+      <div class="intro-step-text">
+        <h3 id="txt-step4H">標記促銷活動</h3>
+        <p id="txt-step4P">如果有折扣、買一送一或其他優惠，勾選對應的促銷類型。</p>
+      </div>
+    </div>
+    <div class="intro-reward-banner">
+      <div class="reward-icon">🎁</div>
+      <div class="reward-text">
+        <h3 id="txt-rewardH">完成訓練可獲得 200 點！</h3>
+        <p id="txt-rewardP">點數可以兌換購物金、禮品卡及更多獎勵</p>
+      </div>
+    </div>
+  </div>
+  <div class="intro-footer">
+    <button class="btn btn-primary" onclick="goToTraining()" id="txt-startTraining">開始訓練任務 🎯</button>
+    <button class="btn btn-ghost" onclick="showPage('page-profile')" style="margin-top:8px;color:var(--text-muted);width:100%;text-align:center;" id="txt-backProfile">← 返回</button>
+  </div>
+</div>
+
+<!-- ══ PAGE 4: TRAINING ══ -->
+<div id="page-training" class="page">
+  <div class="training-header">
+    <div class="header-top">
+      <div>
+        <h1 id="trainingTitle">訓練任務</h1>
+        <p class="step-info" id="trainingStepInfo">第 1 步，共 5 步</p>
+      </div>
+      <div class="points-badge" id="trainingPtsEarned">
+        ⭐ 0 點
+      </div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="trainingProgress" style="width:20%"></div>
+    </div>
+  </div>
+
+  <div class="training-content">
+    <!-- Step 1: Scan barcode -->
+    <div class="mission-card active" id="mission-1">
+      <div>
+        <div class="mission-title" id="txt-m1Title">📱 掃描商品條碼</div>
+        <div class="mission-desc" id="txt-m1Desc">找到您購買的任何商品，掃描其條碼。點擊下方掃描框來模擬掃描！</div>
+        <div class="mission-pts">+10 點</div>
+      </div>
+      <div class="scanner-area" onclick="doScan()" id="scanArea">
+        <div class="scanner-corners">
+          <div class="c3"></div>
+        </div>
+        <div class="scan-line"></div>
+        <div class="barcode-icon">▮▯▮▮▯▮▯▮▮▯</div>
+        <div class="scanner-tap-hint" id="txt-tapScan">點擊掃描</div>
+      </div>
+      <div id="scanResult" style="display:none;">
+        <div style="background:rgba(12,239,183,0.1);border:2px solid var(--teal-mint);border-radius:14px;padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" id="txt-scanSuccess">✅ 掃描成功！</div>
+          <div style="font-size:13px;color:var(--text-muted);" id="txt-scanProduct">商品：洗髮精 400ml<br>條碼：4710088001234</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="scan-next-btn" onclick="nextMission(1)" style="display:none;" id="txt-scanNext">繼續 →</button>
+    </div>
+
+    <!-- Step 2: Price & Quantity -->
+    <div class="mission-card" id="mission-2">
+      <div>
+        <div class="mission-title" id="txt-m2Title">💰 輸入價格與數量</div>
+        <div class="mission-desc" id="txt-m2Desc">您花了多少錢？買了幾個？</div>
+        <div class="mission-pts">+10 點</div>
+      </div>
+      <div class="price-inputs">
+        <div class="form-field">
+          <label id="txt-priceLabel">價格（元）</label>
+          <input type="number" id="priceInput" placeholder="169" min="0">
+        </div>
+        <div class="form-field">
+          <label id="txt-qtyLabel">數量</label>
+          <input type="number" id="qtyInput" placeholder="1" min="1" value="1">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="nextMission(2)" id="txt-priceNext">確認 →</button>
+    </div>
+
+    <!-- Step 3: Store Channel -->
+    <div class="mission-card" id="mission-3">
+      <div>
+        <div class="mission-title" id="txt-m3Title">🏪 購買地點</div>
+        <div class="mission-desc" id="txt-m3Desc">您在哪裡購買這個商品？</div>
+        <div class="mission-pts">+10 點</div>
+      </div>
+      <div class="option-grid">
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">🏬</span>
+          <span id="txt-supermarket">超市</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">🏪</span>
+          <span id="txt-convenience">便利商店</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">🏢</span>
+          <span id="txt-warehouse">量販店</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">💻</span>
+          <span id="txt-online">網路商店</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">💊</span>
+          <span id="txt-pharmacy">藥局</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'channel')">
+          <span class="opt-icon">🛍️</span>
+          <span id="txt-other">其他</span>
+        </button>
+      </div>
+      <button class="btn btn-primary" onclick="nextMission(3)" id="txt-channelNext">確認 →</button>
+    </div>
+
+    <!-- Step 4: Category -->
+    <div class="mission-card" id="mission-4">
+      <div>
+        <div class="mission-title" id="txt-m4Title">📦 商品類別</div>
+        <div class="mission-desc" id="txt-m4Desc">這是哪一類的商品？</div>
+        <div class="mission-pts">+10 點</div>
+      </div>
+      <div class="option-grid">
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">🧴</span>
+          <span id="txt-cat1">個人清潔</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">🍜</span>
+          <span id="txt-cat2">食品飲料</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">🧹</span>
+          <span id="txt-cat3">家庭清潔</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">👶</span>
+          <span id="txt-cat4">嬰幼兒用品</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">🐾</span>
+          <span id="txt-cat5">寵物用品</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this,'category')">
+          <span class="opt-icon">📦</span>
+          <span id="txt-cat6">其他</span>
+        </button>
+      </div>
+      <button class="btn btn-primary" onclick="nextMission(4)" id="txt-categoryNext">確認 →</button>
+    </div>
+
+    <!-- Step 5: Promotions -->
+    <div class="mission-card" id="mission-5">
+      <div>
+        <div class="mission-title" id="txt-m5Title">🎯 促銷活動</div>
+        <div class="mission-desc" id="txt-m5Desc">購買時有優惠嗎？請勾選所有符合的項目（可跳過）</div>
+        <div class="mission-pts">+50 點</div>
+      </div>
+      <div class="promo-list">
+        <div class="promo-item" onclick="togglePromo(this)">
+          <div class="promo-check"></div>
+          <div class="promo-text" id="txt-promo1">無折扣 / 正常售價</div>
+        </div>
+        <div class="promo-item" onclick="togglePromo(this)">
+          <div class="promo-check"></div>
+          <div class="promo-text" id="txt-promo2">折扣 / 特賣（減價）</div>
+        </div>
+        <div class="promo-item" onclick="togglePromo(this)">
+          <div class="promo-check"></div>
+          <div class="promo-text" id="txt-promo3">買一送一 / 多件優惠</div>
+        </div>
+        <div class="promo-item" onclick="togglePromo(this)">
+          <div class="promo-check"></div>
+          <div class="promo-text" id="txt-promo4">贈品 / 加量不加價</div>
+        </div>
+        <div class="promo-item" onclick="togglePromo(this)">
+          <div class="promo-check"></div>
+          <div class="promo-text" id="txt-promo5">紅利點數 / 回饋活動</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="completeTraining()" id="txt-completeBtn">完成訓練！🎉</button>
+    </div>
+  </div>
+  <div class="training-footer" id="trainingFooter"></div>
+</div>
+
+<!-- ══ PAGE 5: HOME ══ -->
+<div id="page-home" class="page">
+  <div class="home-header">
+    <div class="home-header-top">
+      <div class="home-greeting">
+        <h1 id="homeGreeting">早安！</h1>
+        <p id="homeDate">2025年6月15日，星期日</p>
+      </div>
+      <button class="notification-bell" onclick="alert('目前沒有新通知')">
+        🔔<div class="notif-dot"></div>
+      </button>
+    </div>
+    <div class="points-card">
+      <div class="pts-label" id="txt-myPtsLabel">我的點數</div>
+      <div class="pts-amount" id="homePtsAmount">200</div>
+      <div class="pts-sub" id="txt-ptsEarned">🎉 訓練完成獎勵已入帳</div>
+      <div class="pts-bar-wrap">
+        <div class="pts-bar-label">
+          <span id="txt-ptsToRedeem">下次兌換</span>
+          <strong id="pts-progress-text">200 / 500 點</strong>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="homePtsBar" style="width:40%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-content">
+    <!-- Member Status -->
+    <div>
+      <div class="section-title" id="txt-statusTitle">📋 入會進度</div>
+      <div class="status-card">
+        <div class="status-steps">
+          <div class="status-step done">
+            <div class="status-icon">✅</div>
+            <div class="status-step-text">
+              <h4 id="txt-status1H">個人資料填寫</h4>
+              <p id="txt-status1P">已完成</p>
+            </div>
+            <div class="status-pts">+0</div>
+          </div>
+          <div class="status-step done">
+            <div class="status-icon">✅</div>
+            <div class="status-step-text">
+              <h4 id="txt-status2H">訓練任務完成</h4>
+              <p id="txt-status2P">已獲得 200 點</p>
+            </div>
+            <div class="status-pts">+200</div>
+          </div>
+          <div class="status-step active-step">
+            <div class="status-icon">📝</div>
+            <div class="status-step-text">
+              <h4 id="txt-status3H">背景問卷（Survey 1）</h4>
+              <p id="txt-status3P">約 5 分鐘 · 今日截止</p>
+            </div>
+            <div class="status-pts" style="color:var(--teal-mid)">+100</div>
+          </div>
+          <div class="status-step">
+            <div class="status-icon">🔒</div>
+            <div class="status-step-text">
+              <h4 id="txt-status4H">深度問卷（Survey 2）</h4>
+              <p id="txt-status4P">完成 Survey 1 後解鎖</p>
+            </div>
+            <div class="status-pts">+100</div>
+          </div>
+          <div class="status-step">
+            <div class="status-icon">🔒</div>
+            <div class="status-step-text">
+              <h4 id="txt-status5H">正式會員資格</h4>
+              <p id="txt-status5P">2 週內完成 2 次掃描</p>
+            </div>
+            <div class="status-pts">🎖️</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surveys -->
+    <div>
+      <div class="section-title" id="txt-surveyTitle">📋 待完成問卷</div>
+      <div class="survey-cards">
+        <div class="survey-card" onclick="alert('問卷功能即將上線！')">
+          <div class="survey-badge" style="background:rgba(1,167,183,0.12);">📝</div>
+          <div class="survey-info">
+            <h4 id="txt-survey1H">生活背景問卷</h4>
+            <p id="txt-survey1P">約 5 分鐘 · 截止：今日</p>
+          </div>
+          <div class="survey-pts">+100 點</div>
+        </div>
+        <div class="survey-card" style="opacity:0.5;pointer-events:none;">
+          <div class="survey-badge" style="background:rgba(1,73,82,0.06);">🔒</div>
+          <div class="survey-info">
+            <h4 id="txt-survey2H">購物習慣深度調查</h4>
+            <p id="txt-survey2P">約 8 分鐘 · 完成 Survey 1 解鎖</p>
+          </div>
+          <div class="survey-pts">+100 點</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label" id="txt-navHome">首頁</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('wallet')">
+      <span class="nav-icon">🎁</span>
+      <span class="nav-label" id="txt-navRewards">獎勵</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('my')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label" id="txt-navProfile">我的</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ PAGE 6: WALLET ══ -->
+<div id="page-wallet" class="page">
+  <div class="wallet-header">
+    <h1 id="txt-walletH1">獎勵中心</h1>
+    <div class="wallet-big-pts">
+      <div class="wallet-pts-num" id="walletPtsNum">200</div>
+      <div class="wallet-pts-label" id="txt-walletPtsLabel">可用點數</div>
+    </div>
+  </div>
+  <div class="wallet-content">
+    <div>
+      <div class="section-title" id="txt-redeemTitle">兌換獎勵</div>
+      <div class="rewards-grid">
+        <div class="reward-card" onclick="redeemReward(this,'7-11 購物金 50元','200')">
+          <div class="reward-card-img">🏪</div>
+          <div class="reward-card-name" id="txt-reward1">7-11 購物金</div>
+          <div class="reward-card-pts">200 點</div>
+        </div>
+        <div class="reward-card locked" onclick="alert('需要 500 點才能兌換')">
+          <div class="reward-lock">🔒</div>
+          <div class="reward-card-img">☕</div>
+          <div class="reward-card-name" id="txt-reward2">咖啡兌換券</div>
+          <div class="reward-card-pts">500 點</div>
+        </div>
+        <div class="reward-card locked" onclick="alert('需要 1000 點才能兌換')">
+          <div class="reward-lock">🔒</div>
+          <div class="reward-card-img">🎬</div>
+          <div class="reward-card-name" id="txt-reward3">電影票</div>
+          <div class="reward-card-pts">1,000 點</div>
+        </div>
+        <div class="reward-card locked" onclick="alert('需要 2000 點才能兌換')">
+          <div class="reward-lock">🔒</div>
+          <div class="reward-card-img">💳</div>
+          <div class="reward-card-name" id="txt-reward4">購物金 200元</div>
+          <div class="reward-card-pts">2,000 點</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title" id="txt-historyTitle">點數紀錄</div>
+      <div class="card">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);" id="txt-hist1">訓練任務完成</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">2025/06/15</div>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:var(--teal-mint);">+200</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);" id="txt-hist2">帳號建立獎勵</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">2025/06/15</div>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:var(--teal-mint);">+0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label" id="txt-navHome2">首頁</span>
+    </button>
+    <button class="nav-item active" onclick="switchTab('wallet')">
+      <span class="nav-icon">🎁</span>
+      <span class="nav-label" id="txt-navRewards2">獎勵</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('my')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label" id="txt-navProfile2">我的</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ PAGE 7: MY PROFILE ══ -->
+<div id="page-my" class="page">
+  <div class="my-header">
+    <div class="my-avatar">😊</div>
+    <div class="my-name" id="myName">會員</div>
+    <div class="my-id" id="txt-memberId">會員 ID：WP-2025-00001</div>
+    <div class="my-status-badge" id="txt-memberStatus">🌱 訓練中會員</div>
+  </div>
+  <div class="my-content">
+    <button class="ai-btn" onclick="openAI()">
+      <div class="ai-icon">🤖</div>
+      <div class="ai-text">
+        <h3 id="txt-aiTitle">有問題嗎？問 AI 助理</h3>
+        <p id="txt-aiSub">關於掃描、點數、App 使用等問題</p>
+      </div>
+      <div style="color:rgba(255,255,255,0.5);font-size:20px;">›</div>
+    </button>
+
+    <div class="my-menu-card">
+      <div class="my-menu-item" onclick="alert('個人資料編輯功能即將上線')">
+        <div class="menu-icon">👤</div>
+        <div class="menu-text">
+          <h4 id="txt-menu1H">個人資料</h4>
+          <p id="txt-menu1P">查看或修改您的資料</p>
+        </div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="my-menu-item" onclick="alert('點數歷史即將上線')">
+        <div class="menu-icon">⭐</div>
+        <div class="menu-text">
+          <h4 id="txt-menu2H">點數歷史</h4>
+          <p id="txt-menu2P">查看所有點數紀錄</p>
+        </div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="my-menu-item" onclick="alert('FAQ 即將上線')">
+        <div class="menu-icon">❓</div>
+        <div class="menu-text">
+          <h4 id="txt-menu3H">常見問題</h4>
+          <p id="txt-menu3P">使用說明與常見疑問</p>
+        </div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="my-menu-item" onclick="alert('聯絡客服功能即將上線')">
+        <div class="menu-icon">💬</div>
+        <div class="menu-text">
+          <h4 id="txt-menu4H">聯絡客服</h4>
+          <p id="txt-menu4P">週一至週五 9:00–18:00</p>
+        </div>
+        <div class="menu-arrow">›</div>
+      </div>
+      <div class="my-menu-item" onclick="logout()">
+        <div class="menu-icon">🚪</div>
+        <div class="menu-text">
+          <h4 style="color:#e53e3e;" id="txt-logoutH">登出</h4>
+          <p id="txt-logoutP">返回登入頁面</p>
+        </div>
+        <div class="menu-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label" id="txt-navHome3">首頁</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('wallet')">
+      <span class="nav-icon">🎁</span>
+      <span class="nav-label" id="txt-navRewards3">獎勵</span>
+    </button>
+    <button class="nav-item active" onclick="switchTab('my')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label" id="txt-navProfile3">我的</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ AI CHAT MODAL ══ -->
+<div class="modal-overlay" id="aiModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span style="font-size:22px;">🤖</span>
+      <h3 id="txt-aiModalTitle">Worldpanel+ 小幫手</h3>
+      <button class="modal-close" onclick="closeAI()">✕</button>
+    </div>
+    <div class="quick-qs" id="quickQs">
+      <button class="quick-q" onclick="askQuick(this)">如何掃描條碼？</button>
+      <button class="quick-q" onclick="askQuick(this)">點數何時入帳？</button>
+      <button class="quick-q" onclick="askQuick(this)">可以兌換什麼獎勵？</button>
+      <button class="quick-q" onclick="askQuick(this)">一定要每天掃描嗎？</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot" id="txt-aiWelcome">👋 您好！我是 Worldpanel+ AI 小幫手。請問有什麼可以幫您？</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chatInput" placeholder="輸入您的問題..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COMPLETION OVERLAY ══ -->
+<div class="completion-overlay" id="completionOverlay">
+  <div class="completion-card">
+    <span class="completion-emoji">🎉</span>
+    <h2 id="txt-completeH2">訓練完成！</h2>
+    <p id="txt-completeP">太棒了！您已完成所有訓練任務，可以開始正式記錄購物了！</p>
+    <div class="completion-pts">
+      <div class="big-pts" id="txt-completePts">+200</div>
+      <div class="pts-word" id="txt-ptsWord">點數已入帳</div>
+    </div>
+    <button class="btn btn-primary" onclick="goToHome()" id="txt-goHomeBtn">前往主頁 🏠</button>
+  </div>
+</div>
+
+<!-- ══ CONFETTI ══ -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ── STATE ──
+let currentLang = 'zh';
+let trainingPts = 0;
+let currentMission = 1;
+let userPoints = 0;
+let userName = '會員';
+let scanDone = false;
+
+// ── TRANSLATIONS ──
+const T = {
+  zh: {
+    langBtn: 'EN',
+    bySub: 'by Numerator',
+    welcomeH2: '歡迎加入\n消費者調查夥伴',
+    welcomeP: '記錄您的購物，幫助品牌了解台灣消費趨勢，並賺取豐富點數獎勵！',
+    joinBtn: '🚀 立即加入',
+    loginBtn: '我已有帳號',
+    demoBtn: '👀 Demo 體驗（跳過登入）',
+    phoneLabel: '手機號碼',
+    otpLabel: '輸入驗證碼',
+    otpHint: '💡 Demo 用：輸入任意 6 碼即可',
+    loginNext: '取得驗證碼',
+    backBtn: '← 返回',
+    profileStep: '步驟 1／4',
+    profileH1: '建立您的個人資料',
+    profileP: '完整的資料幫助我們提供更準確的調查',
+    nameLabel: '您的姓名',
+    cityLabel: '居住縣市',
+    districtLabel: '居住區域',
+    birthYearLabel: '出生年份',
+    birthDateLabel: '出生月日',
+    profileNext: '下一步 →',
+    introStep: '步驟 2／4',
+    introH1: '您的任務說明',
+    introP: '成為 Worldpanel 夥伴，只需要做 4 件簡單的事',
+    step1H: '掃描商品條碼',
+    step1P: '每次購物後，用 PanelSmart App 掃描購買商品的條碼。只需幾秒鐘！',
+    step2H: '輸入價格與數量',
+    step2P: '記錄您實際支付的金額和購買數量，幫助我們了解市場價格。',
+    step3H: '選擇購物場所',
+    step3P: '選擇您在哪裡購買——超市、便利商店、量販店或網路商店。',
+    step4H: '標記促銷活動',
+    step4P: '如果有折扣、買一送一或其他優惠，勾選對應的促銷類型。',
+    rewardH: '完成訓練可獲得 200 點！',
+    rewardP: '點數可以兌換購物金、禮品卡及更多獎勵',
+    startTraining: '開始訓練任務 🎯',
+    backProfile: '← 返回',
+    m1Title: '📱 掃描商品條碼',
+    m1Desc: '找到您購買的任何商品，掃描其條碼。點擊下方掃描框來模擬掃描！',
+    tapScan: '點擊掃描',
+    scanSuccess: '✅ 掃描成功！',
+    scanProduct: '商品：洗髮精 400ml\n條碼：4710088001234',
+    scanNext: '繼續 →',
+    m2Title: '💰 輸入價格與數量',
+    m2Desc: '您花了多少錢？買了幾個？',
+    priceLabel: '價格（元）',
+    qtyLabel: '數量',
+    priceNext: '確認 →',
+    m3Title: '🏪 購買地點',
+    m3Desc: '您在哪裡購買這個商品？',
+    supermarket: '超市',
+    convenience: '便利商店',
+    warehouse: '量販店',
+    online: '網路商店',
+    pharmacy: '藥局',
+    other: '其他',
+    channelNext: '確認 →',
+    m4Title: '📦 商品類別',
+    m4Desc: '這是哪一類的商品？',
+    cat1: '個人清潔',
+    cat2: '食品飲料',
+    cat3: '家庭清潔',
+    cat4: '嬰幼兒用品',
+    cat5: '寵物用品',
+    cat6: '其他',
+    categoryNext: '確認 →',
+    m5Title: '🎯 促銷活動',
+    m5Desc: '購買時有優惠嗎？請勾選所有符合的項目（可跳過）',
+    promo1: '無折扣 / 正常售價',
+    promo2: '折扣 / 特賣（減價）',
+    promo3: '買一送一 / 多件優惠',
+    promo4: '贈品 / 加量不加價',
+    promo5: '紅利點數 / 回饋活動',
+    completeBtn: '完成訓練！🎉',
+    myPtsLabel: '我的點數',
+    ptsEarned: '🎉 訓練完成獎勵已入帳',
+    ptsToRedeem: '下次兌換',
+    statusTitle: '📋 入會進度',
+    status1H: '個人資料填寫',
+    status1P: '已完成',
+    status2H: '訓練任務完成',
+    status2P: '已獲得 200 點',
+    status3H: '背景問卷（Survey 1）',
+    status3P: '約 5 分鐘 · 今日截止',
+    status4H: '深度問卷（Survey 2）',
+    status4P: '完成 Survey 1 後解鎖',
+    status5H: '正式會員資格',
+    status5P: '2 週內完成 2 次掃描',
+    surveyTitle: '📋 待完成問卷',
+    survey1H: '生活背景問卷',
+    survey1P: '約 5 分鐘 · 截止：今日',
+    survey2H: '購物習慣深度調查',
+    survey2P: '約 8 分鐘 · 完成 Survey 1 解鎖',
+    navHome: '首頁',
+    navRewards: '獎勵',
+    navProfile: '我的',
+    walletH1: '獎勵中心',
+    walletPtsLabel: '可用點數',
+    redeemTitle: '兌換獎勵',
+    reward1: '7-11 購物金',
+    reward2: '咖啡兌換券',
+    reward3: '電影票',
+    reward4: '購物金 200元',
+    historyTitle: '點數紀錄',
+    hist1: '訓練任務完成',
+    hist2: '帳號建立獎勵',
+    memberId: '會員 ID：WP-2025-00001',
+    memberStatus: '🌱 訓練中會員',
+    aiTitle: '有問題嗎？問 AI 助理',
+    aiSub: '關於掃描、點數、App 使用等問題',
+    menu1H: '個人資料',
+    menu1P: '查看或修改您的資料',
+    menu2H: '點數歷史',
+    menu2P: '查看所有點數紀錄',
+    menu3H: '常見問題',
+    menu3P: '使用說明與常見疑問',
+    menu4H: '聯絡客服',
+    menu4P: '週一至週五 9:00–18:00',
+    logoutH: '登出',
+    logoutP: '返回登入頁面',
+    aiModalTitle: 'Worldpanel+ 小幫手',
+    aiWelcome: '👋 您好！我是 Worldpanel+ AI 小幫手。請問有什麼可以幫您？',
+    completeH2: '訓練完成！',
+    completeP: '太棒了！您已完成所有訓練任務，可以開始正式記錄購物了！',
+    completePts: '+200',
+    ptsWord: '點數已入帳',
+    goHomeBtn: '前往主頁 🏠',
+    quickQs: ['如何掃描條碼？','點數何時入帳？','可以兌換什麼獎勵？','一定要每天掃描嗎？']
+  },
+  en: {
+    langBtn: '中文',
+    bySub: 'by Numerator',
+    welcomeH2: 'Welcome to\nConsumer Panel',
+    welcomeP: 'Record your purchases, help brands understand trends, and earn great rewards!',
+    joinBtn: '🚀 Join Now',
+    loginBtn: 'I have an account',
+    demoBtn: '👀 Demo (Skip Login)',
+    phoneLabel: 'Phone Number',
+    otpLabel: 'Enter Verification Code',
+    otpHint: '💡 Demo: Enter any 6 digits',
+    loginNext: 'Get OTP',
+    backBtn: '← Back',
+    profileStep: 'Step 1 of 4',
+    profileH1: 'Create Your Profile',
+    profileP: 'Complete info helps us provide better surveys',
+    nameLabel: 'Your Name',
+    cityLabel: 'City / County',
+    districtLabel: 'District',
+    birthYearLabel: 'Birth Year',
+    birthDateLabel: 'Birth Month & Day',
+    profileNext: 'Next →',
+    introStep: 'Step 2 of 4',
+    introH1: 'Your Mission',
+    introP: 'Being a Worldpanel partner only requires 4 simple things',
+    step1H: 'Scan Product Barcodes',
+    step1P: 'After shopping, scan purchased product barcodes using PanelSmart. Takes only seconds!',
+    step2H: 'Enter Price & Quantity',
+    step2P: 'Record the actual amount paid and quantity purchased.',
+    step3H: 'Select Purchase Location',
+    step3P: 'Choose where you bought it — supermarket, convenience store, warehouse, or online.',
+    step4H: 'Mark Promotions',
+    step4P: 'If there was a discount, BOGO, or other offer, select the matching promotion type.',
+    rewardH: 'Earn 200 pts by completing training!',
+    rewardP: 'Points can be redeemed for vouchers, gift cards and more',
+    startTraining: 'Start Training 🎯',
+    backProfile: '← Back',
+    m1Title: '📱 Scan Barcode',
+    m1Desc: 'Find any product you purchased and scan its barcode. Tap the scanner below to simulate!',
+    tapScan: 'Tap to Scan',
+    scanSuccess: '✅ Scan Successful!',
+    scanProduct: 'Product: Shampoo 400ml\nBarcode: 4710088001234',
+    scanNext: 'Continue →',
+    m2Title: '💰 Price & Quantity',
+    m2Desc: 'How much did you pay? How many did you buy?',
+    priceLabel: 'Price (NT$)',
+    qtyLabel: 'Quantity',
+    priceNext: 'Confirm →',
+    m3Title: '🏪 Purchase Location',
+    m3Desc: 'Where did you buy this product?',
+    supermarket: 'Supermarket',
+    convenience: 'Convenience Store',
+    warehouse: 'Warehouse Store',
+    online: 'Online Shop',
+    pharmacy: 'Pharmacy',
+    other: 'Other',
+    channelNext: 'Confirm →',
+    m4Title: '📦 Product Category',
+    m4Desc: 'What type of product is this?',
+    cat1: 'Personal Care',
+    cat2: 'Food & Drink',
+    cat3: 'Home Care',
+    cat4: 'Baby Products',
+    cat5: 'Pet Products',
+    cat6: 'Other',
+    categoryNext: 'Confirm →',
+    m5Title: '🎯 Promotions',
+    m5Desc: 'Were there any promotions? Check all that apply (optional)',
+    promo1: 'No discount / Regular price',
+    promo2: 'Discount / Sale',
+    promo3: 'Buy One Get One / Multi-buy',
+    promo4: 'Free gift / Extra quantity',
+    promo5: 'Loyalty points / Cashback',
+    completeBtn: 'Complete Training! 🎉',
+    myPtsLabel: 'My Points',
+    ptsEarned: '🎉 Training bonus credited',
+    ptsToRedeem: 'Next reward at',
+    statusTitle: '📋 Membership Progress',
+    status1H: 'Profile Setup',
+    status1P: 'Completed',
+    status2H: 'Training Complete',
+    status2P: 'Earned 200 points',
+    status3H: 'Background Survey (Survey 1)',
+    status3P: '~5 min · Due today',
+    status4H: 'In-depth Survey (Survey 2)',
+    status4P: 'Unlocked after Survey 1',
+    status5H: 'Full Member Status',
+    status5P: '2 scans within 2 weeks',
+    surveyTitle: '📋 Pending Surveys',
+    survey1H: 'Background Survey',
+    survey1P: '~5 min · Due today',
+    survey2H: 'Shopping Habits Survey',
+    survey2P: '~8 min · Unlock after Survey 1',
+    navHome: 'Home',
+    navRewards: 'Rewards',
+    navProfile: 'Profile',
+    walletH1: 'Rewards Center',
+    walletPtsLabel: 'Available Points',
+    redeemTitle: 'Redeem Rewards',
+    reward1: '7-11 Voucher',
+    reward2: 'Coffee Coupon',
+    reward3: 'Movie Ticket',
+    reward4: 'NT$200 Voucher',
+    historyTitle: 'Points History',
+    hist1: 'Training Complete',
+    hist2: 'Account Setup Bonus',
+    memberId: 'Member ID: WP-2025-00001',
+    memberStatus: '🌱 Training Member',
+    aiTitle: 'Questions? Ask AI',
+    aiSub: 'About scanning, points, App usage and more',
+    menu1H: 'My Profile',
+    menu1P: 'View or edit your info',
+    menu2H: 'Points History',
+    menu2P: 'View all point transactions',
+    menu3H: 'FAQ',
+    menu3P: 'Help & common questions',
+    menu4H: 'Contact Support',
+    menu4P: 'Mon–Fri 9:00–18:00',
+    logoutH: 'Log Out',
+    logoutP: 'Return to login',
+    aiModalTitle: 'Worldpanel+ Assistant',
+    aiWelcome: '👋 Hi! I\'m your Worldpanel+ AI assistant. How can I help you?',
+    completeH2: 'Training Complete!',
+    completeP: 'Excellent! You\'ve completed all training missions. Start recording your purchases now!',
+    completePts: '+200',
+    ptsWord: 'Points Credited',
+    goHomeBtn: 'Go to Home 🏠',
+    quickQs: ['How to scan barcodes?','When do points arrive?','What can I redeem?','Do I scan every day?']
+  }
+};
+
+// ── LANGUAGE TOGGLE ──
+function toggleLang() {
+  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+  applyLang();
+}
+
+function applyLang() {
+  const t = T[currentLang];
+  document.getElementById('langToggle').textContent = t.langBtn;
+
+  const ids = ['bySub','welcomeP','joinBtn','loginBtn','demoBtn','phoneLabel',
+    'otpLabel','otpHint','loginNext','backBtn','profileStep','profileH1','profileP',
+    'nameLabel','cityLabel','districtLabel','birthYearLabel','birthDateLabel','profileNext',
+    'introStep','introH1',
+    'introP','step1H','step1P','step2H','step2P','step3H','step3P','step4H','step4P',
+    'rewardH','rewardP','startTraining','backProfile','m1Title','m1Desc','tapScan',
+    'scanSuccess','m2Title','m2Desc','priceLabel','qtyLabel','priceNext','m3Title',
+    'm3Desc','supermarket','convenience','warehouse','online','pharmacy','other',
+    'channelNext','m4Title','m4Desc','cat1','cat2','cat3','cat4','cat5','cat6',
+    'categoryNext','m5Title','m5Desc','promo1','promo2','promo3','promo4','promo5',
+    'completeBtn','myPtsLabel','ptsEarned','ptsToRedeem','statusTitle','status1H',
+    'status1P','status2H','status2P','status3H','status3P','status4H','status4P',
+    'status5H','status5P','surveyTitle','survey1H','survey1P','survey2H','survey2P',
+    'navHome','navRewards','navProfile','walletH1','walletPtsLabel','redeemTitle',
+    'reward1','reward2','reward3','reward4','historyTitle','hist1','hist2',
+    'memberId','memberStatus','aiTitle','aiSub','menu1H','menu1P','menu2H','menu2P',
+    'menu3H','menu3P','menu4H','menu4P','logoutH','logoutP','aiModalTitle','aiWelcome',
+    'completeH2','completeP','completePts','ptsWord','goHomeBtn'];
+
+  ids.forEach(id => {
+    const el = document.getElementById('txt-' + id);
+    if (el && t[id] !== undefined) el.textContent = t[id];
+  });
+
+  // welcomeH2 with line break
+  const wh2 = document.getElementById('txt-welcomeH2');
+  if (wh2) wh2.innerHTML = t.welcomeH2.replace('\n','<br>');
+
+  // Quick questions
+  const qqs = document.querySelectorAll('.quick-q');
+  if (t.quickQs) qqs.forEach((q,i) => { if(t.quickQs[i]) q.textContent = t.quickQs[i]; });
+
+  // Greeting
+  updateGreeting();
+  updateMyName();
+}
+
+// ── PAGE NAVIGATION ──
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.getElementById(pageId).scrollTop = 0;
+}
+
+// ── WELCOME PAGE ──
+function showLoginForm(mode) {
+  document.getElementById('welcome-main-btns').style.display = 'none';
+  const form = document.getElementById('loginForm');
+  form.classList.add('show');
+}
+
+function hideLoginForm() {
+  document.getElementById('welcome-main-btns').style.display = 'block';
+  document.getElementById('loginForm').classList.remove('show');
+  document.getElementById('otpSection').style.display = 'none';
+}
+
+let loginStep = 1;
+function handleLoginNext() {
+  if (loginStep === 1) {
+    const phone = document.getElementById('phoneInput').value;
+    if (!phone) { document.getElementById('phoneInput').focus(); return; }
+    document.getElementById('otpSection').style.display = 'block';
+    document.getElementById('txt-loginNext').textContent = currentLang==='zh' ? '驗證並繼續' : 'Verify & Continue';
+    document.querySelectorAll('.otp-digit')[0].focus();
+    loginStep = 2;
+  } else {
+    const otp = [...document.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+    if (otp.length < 6) { document.querySelectorAll('.otp-digit')[0].focus(); return; }
+    const name = document.getElementById('profileName');
+    if (!name) { showPage('page-profile'); return; }
+    showPage('page-profile');
+    loginStep = 1;
+  }
+}
+
+function otpNav(input) {
+  if (input.value && input.nextElementSibling && input.nextElementSibling.classList.contains('otp-digit')) {
+    input.nextElementSibling.focus();
+  }
+  const otp = [...document.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+  if (otp.length === 6) {
+    setTimeout(() => { showPage('page-profile'); loginStep = 1; }, 400);
+  }
+}
+
+function demoLogin() {
+  showPage('page-profile');
+}
+
+// ── PROFILE PAGE ──
+function selectHH(btn, val) {
+  document.querySelectorAll('.hh-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function toggleChip(chip) {
+  chip.classList.toggle('selected');
+}
+
+function goToIntro() {
+  const name = document.getElementById('profileName').value || (currentLang==='zh'?'新會員':'New Member');
+  userName = name;
+  showPage('page-intro');
+}
+
+// ── INTRO PAGE ──
+function goToTraining() {
+  currentMission = 1;
+  trainingPts = 0;
+  showPage('page-training');
+  updateTrainingUI();
+}
+
+// ── TRAINING ──
+function updateTrainingUI() {
+  const steps = {zh:['第 1 步，共 5 步','第 2 步，共 5 步','第 3 步，共 5 步','第 4 步，共 5 步','第 5 步，共 5 步'],
+                  en:['Step 1 of 5','Step 2 of 5','Step 3 of 5','Step 4 of 5','Step 5 of 5']};
+  const titles = {zh:['訓練任務','訓練任務','訓練任務','訓練任務','訓練任務'],
+                   en:['Training','Training','Training','Training','Training']};
+  const pcts = [20,40,60,80,100];
+  document.getElementById('trainingStepInfo').textContent = steps[currentLang][currentMission-1];
+  document.getElementById('trainingTitle').textContent = titles[currentLang][currentMission-1];
+  document.getElementById('trainingProgress').style.width = pcts[currentMission-1] + '%';
+  document.getElementById('trainingPtsEarned').textContent = '⭐ ' + trainingPts + (currentLang==='zh'?' 點':' pts');
+}
+
+let channelSelected = false;
+let categorySelected = false;
+
+function doScan() {
+  if (scanDone) return;
+  const area = document.getElementById('scanArea');
+  area.style.background = '#016875';
+  setTimeout(() => {
+    area.style.background = 'var(--teal-dark)';
+    document.getElementById('scanResult').style.display = 'block';
+    document.getElementById('scan-next-btn').style.display = 'flex';
+    scanDone = true;
+    trainingPts += 10;
+    updateTrainingUI();
+  }, 600);
+}
+
+function selectOption(btn, group) {
+  const parent = btn.closest('.option-grid');
+  parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (group === 'channel') channelSelected = true;
+  if (group === 'category') categorySelected = true;
+}
+
+function togglePromo(item) {
+  item.classList.toggle('selected');
+  const check = item.querySelector('.promo-check');
+  check.textContent = item.classList.contains('selected') ? '✓' : '';
+}
+
+function nextMission(missionNum) {
+  // Validate
+  if (missionNum === 2) {
+    const price = document.getElementById('priceInput').value;
+    if (!price) { document.getElementById('priceInput').focus(); return; }
+    trainingPts += 10;
+  }
+  if (missionNum === 3) {
+    if (!channelSelected) { return; }
+    trainingPts += 10;
+  }
+  if (missionNum === 4) {
+    if (!categorySelected) { return; }
+    trainingPts += 10;
+  }
+
+  document.getElementById('mission-' + missionNum).classList.remove('active');
+  currentMission = missionNum + 1;
+  const next = document.getElementById('mission-' + currentMission);
+  if (next) {
+    next.classList.add('active');
+    updateTrainingUI();
+    document.getElementById('page-training').scrollTop = 0;
+  }
+}
+
+function completeTraining() {
+  trainingPts += 50;
+  userPoints = trainingPts;
+  launchConfetti();
+  document.getElementById('completionOverlay').classList.add('show');
+  document.getElementById('txt-completePts').textContent = '+' + trainingPts;
+}
+
+function goToHome() {
+  document.getElementById('completionOverlay').classList.remove('show');
+  document.getElementById('confettiContainer').innerHTML = '';
+  showPage('page-home');
+  updateHomeUI();
+}
+
+function updateHomeUI() {
+  const pts = userPoints || 200;
+  document.getElementById('homePtsAmount').textContent = pts;
+  document.getElementById('walletPtsNum').textContent = pts;
+  document.getElementById('pts-progress-text').textContent = pts + ' / 500 ' + (currentLang==='zh'?'點':'pts');
+  document.getElementById('homePtsBar').style.width = Math.min((pts/500)*100,100) + '%';
+  updateGreeting();
+  updateMyName();
+}
+
+function updateGreeting() {
+  const now = new Date();
+  const h = now.getHours();
+  let g;
+  if (currentLang === 'zh') {
+    g = h < 12 ? '早安！' : h < 18 ? '午安！' : '晚安！';
+    const name = userName !== '會員' ? userName + '，' : '';
+    document.getElementById('homeGreeting').textContent = g + name;
+    const days = ['日','一','二','三','四','五','六'];
+    document.getElementById('homeDate').textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日，星期${days[now.getDay()]}`;
+  } else {
+    g = h < 12 ? 'Good Morning!' : h < 18 ? 'Good Afternoon!' : 'Good Evening!';
+    const name = userName !== '會員' && userName !== 'New Member' ? ', ' + userName : '!';
+    document.getElementById('homeGreeting').textContent = g;
+    const opts = { year:'numeric', month:'long', day:'numeric', weekday:'long' };
+    document.getElementById('homeDate').textContent = now.toLocaleDateString('en-US', opts);
+  }
+}
+
+function updateMyName() {
+  const el = document.getElementById('myName');
+  if (el) el.textContent = userName !== '會員' ? userName : (currentLang==='zh'?'會員':'Member');
+}
+
+// ── TABS ──
+function switchTab(tab) {
+  const pages = { home:'page-home', wallet:'page-wallet', my:'page-my' };
+  showPage(pages[tab]);
+  updateHomeUI();
+}
+
+// ── AI CHAT ──
+let chatHistory = [];
+
+function openAI() {
+  document.getElementById('aiModal').classList.add('show');
+  document.getElementById('chatInput').focus();
+}
+
+function closeAI() {
+  document.getElementById('aiModal').classList.remove('show');
+}
+
+function askQuick(btn) {
+  const question = btn.textContent;
+  document.getElementById('chatInput').value = question;
+  sendChat();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  appendMsg(msg, 'user');
+  chatHistory.push({ role:'user', parts:[{text: msg}] });
+
+  const typingEl = appendMsg(currentLang==='zh'?'正在輸入...':'Typing...', 'bot typing');
+
+  const sysPrompt = currentLang === 'zh' ?
+    `你是 Worldpanel Plus（樣本+）的 AI 小幫手，專門解答台灣消費者調查會員的問題。
+Worldpanel Plus 是一個消費者調查 App，會員需要用 PanelSmart App 掃描購買商品的條碼、記錄價格和數量、選擇購買地點和促銷活動。
+完成訓練可獲得 200 點，調查問卷各獲 100 點，點數可以兌換 7-11 購物金、咖啡券、電影票等獎勵。
+請用親切、簡短的繁體中文回答，不要超過 100 字。` :
+    `You are the AI assistant for Worldpanel Plus, helping consumer panel members in Taiwan.
+Worldpanel Plus is a consumer survey app where members scan product barcodes, record prices/quantities, and select purchase locations using PanelSmart App.
+Training earns 200 points, surveys earn 100 points each, redeemable for 7-11 vouchers, coffee, movie tickets.
+Reply in friendly, concise English under 80 words.`;
+
+  try {
+    const payload = {
+      system_instruction: { parts: [{ text: sysPrompt }] },
+      contents: chatHistory,
+      generationConfig: { temperature: 0.7, maxOutputTokens: 200 }
+    };
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text
+      || (currentLang==='zh'?'抱歉，暫時無法回應，請稍後再試！':'Sorry, I\'m unavailable right now. Please try again!');
+    typingEl.remove();
+    appendMsg(reply, 'bot');
+    chatHistory.push({ role:'model', parts:[{text: reply}] });
+  } catch(e) {
+    typingEl.remove();
+    appendMsg(currentLang==='zh'?'網路異常，請稍後再試。':'Connection error. Please try again.', 'bot');
+  }
+}
+
+function appendMsg(text, cls) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + cls;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+// ── CONFETTI ──
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#FFD528','#01A7B7','#2EEFEE','#0CEFB7','#014952','#ffffff'];
+  for (let i = 0; i < 80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random()*100}%;
+      top: -20px;
+      width: ${6 + Math.random()*8}px;
+      height: ${6 + Math.random()*8}px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius: ${Math.random()>0.5?'50%':'3px'};
+      animation-duration: ${2 + Math.random()*2}s;
+      animation-delay: ${Math.random()*0.8}s;
+    `;
+    container.appendChild(piece);
+  }
+  setTimeout(() => { container.innerHTML = ''; }, 5000);
+}
+
+// ── REWARDS ──
+function redeemReward(card, name, pts) {
+  if (userPoints < parseInt(pts)) {
+    alert(currentLang==='zh'?`點數不足！需要 ${pts} 點，目前有 ${userPoints} 點。`:`Not enough points! Need ${pts}, you have ${userPoints}.`);
+    return;
+  }
+  userPoints -= parseInt(pts);
+  updateHomeUI();
+  const msg = currentLang==='zh'?`已成功兌換「${name}」！🎉\n${pts} 點已扣除。`:`Successfully redeemed "${name}"! 🎉\n${pts} points deducted.`;
+  alert(msg);
+}
+
+// ── LOGOUT ──
+function logout() {
+  if (confirm(currentLang==='zh'?'確定要登出嗎？':'Confirm logout?')) {
+    userName = '會員';
+    userPoints = 0;
+    trainingPts = 0;
+    currentMission = 1;
+    scanDone = false;
+    channelSelected = false;
+    categorySelected = false;
+    document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+    document.querySelectorAll('.promo-item').forEach(b=>{b.classList.remove('selected');b.querySelector('.promo-check').textContent='';});
+    document.querySelectorAll('.hh-btn').forEach(b=>b.classList.remove('selected'));
+    document.querySelectorAll('.store-chip').forEach(b=>b.classList.remove('selected'));
+    document.getElementById('profileName').value='';
+    document.getElementById('priceInput').value='';
+    document.getElementById('scanResult').style.display='none';
+    document.getElementById('scan-next-btn').style.display='none';
+    document.querySelectorAll('.mission-card').forEach(c=>c.classList.remove('active'));
+    document.getElementById('mission-1').classList.add('active');
+    document.getElementById('loginForm').classList.remove('show');
+    document.getElementById('welcome-main-btns').style.display='block';
+    document.getElementById('phoneInput').value='';
+    document.querySelectorAll('.otp-digit').forEach(d=>d.value='');
+    document.getElementById('otpSection').style.display='none';
+    loginStep=1;
+    chatHistory=[];
+    document.getElementById('chatMessages').innerHTML='<div class="chat-msg bot" id="txt-aiWelcome">' + T[currentLang].aiWelcome + '</div>';
+    showPage('page-welcome');
+  }
+}
+
+
+// ── POPULATE BIRTH YEAR ──
+function populateBirthYear() {
+  const sel = document.getElementById('profileBirthYear');
+  if (!sel) return;
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear - 18; y >= currentYear - 90; y--) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + ' 年';
+    sel.appendChild(opt);
+  }
+}
+
+// ── UPDATE DAYS based on month ──
+function updateDays() {
+  const month = parseInt(document.getElementById('profileBirthMonth').value);
+  const year = parseInt(document.getElementById('profileBirthYear').value) || 2000;
+  const daysSel = document.getElementById('profileBirthDay');
+  const prevVal = daysSel.value;
+
+  // Days in month
+  let maxDays = 31;
+  if ([4,6,9,11].includes(month)) maxDays = 30;
+  else if (month === 2) {
+    maxDays = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
+  }
+
+  daysSel.innerHTML = '<option value="">日</option>';
+  for (let d = 1; d <= maxDays; d++) {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d + ' 日';
+    daysSel.appendChild(opt);
+  }
+  if (prevVal && parseInt(prevVal) <= maxDays) daysSel.value = prevVal;
+}
+
+// ── INIT ──
+populateBirthYear();
+updateGreeting();
+setInterval(updateGreeting, 60000);
+</script>
+</body>
+</html>
