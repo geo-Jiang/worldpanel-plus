@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Worldpanel Plus">
 <meta name="theme-color" content="#014952">
-<meta http-equiv="Content-Security-Policy" content="default-src * data: blob: filesystem: about: ws: wss:; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; style-src * data: blob: 'unsafe-inline'; img-src * data: blob:;">
 <title>Worldpanel Plus</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -2107,16 +2106,15 @@ function launchConfetti() {
   for (let i = 0; i < 80; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
-    piece.style.cssText = `
-      left: ${Math.random()*100}%;
-      top: -20px;
-      width: ${6 + Math.random()*8}px;
-      height: ${6 + Math.random()*8}px;
-      background: ${colors[Math.floor(Math.random()*colors.length)]};
-      border-radius: ${Math.random()>0.5?'50%':'3px'};
-      animation-duration: ${2 + Math.random()*2}s;
-      animation-delay: ${Math.random()*0.8}s;
-    `;
+    const size = 6 + Math.random()*8;
+    piece.style.left = Math.random()*100 + '%';
+    piece.style.top = '-20px';
+    piece.style.width = size + 'px';
+    piece.style.height = size + 'px';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    piece.style.animationDuration = (2 + Math.random()*2) + 's';
+    piece.style.animationDelay = (Math.random()*0.8) + 's';
     container.appendChild(piece);
   }
   setTimeout(() => { container.innerHTML = ''; }, 5000);
