@@ -728,10 +728,8 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
 </head>
 <body>
 
-<!-- Language Toggle -->
 <button class="lang-toggle" id="langToggle" onclick="toggleLang()">EN</button>
 
-<!-- ══ PAGE 1: WELCOME ══ -->
 <div id="page-welcome" class="page active">
   <div class="welcome-inner">
     <div class="welcome-logo-area">
@@ -786,7 +784,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ PAGE 2: PROFILE ══ -->
 <div id="page-profile" class="page">
   <div class="profile-header">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -805,12 +802,10 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
   </div>
   <div class="profile-form">
-    <!-- 姓名 -->
     <div class="form-field">
       <label id="txt-nameLabel">您的姓名</label>
       <input type="text" id="profileName" placeholder="請輸入姓名">
     </div>
-    <!-- 居住縣市 -->
     <div class="form-field">
       <label id="txt-cityLabel">居住縣市</label>
       <select id="profileCity" >
@@ -826,7 +821,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       </select>
     </div>
 
-    <!-- 居住區域 -->
     <div class="form-field">
       <label>居住區域</label>
       <select id="profileDistrict">
@@ -836,14 +830,12 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
         <option>區域三</option>
       </select>
     </div>
-    <!-- 出生年份 -->
     <div class="form-field">
       <label id="txt-birthYearLabel">出生年份</label>
       <select id="profileBirthYear">
         <option value="">請選擇年份</option>
       </select>
     </div>
-    <!-- 出生月日 -->
     <div class="form-field">
       <label id="txt-birthDateLabel">出生月日</label>
       <div style="display:flex;gap:10px;">
@@ -861,19 +853,17 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
         </select>
       </div>
     </div>
-    <!-- 家庭人數 - 直接輸入數字 -->
     <div class="form-field">
       <label id="txt-hhLabel">家庭人數（含自己）</label>
       <input type="number" id="profileHH" min="1" max="20" placeholder="例如：3"
         style="font-size:22px;font-weight:700;text-align:center;">
     </div>
+  </div>
+  <div class="profile-footer">
+    <button class="btn btn-primary" onclick="goToIntro()" id="txt-profileNext">下一步 →</button>
+  </div>
+</div>
 
-</div> <div class="profile-footer">
-      <button class="btn btn-primary" onclick="goToIntro()" id="txt-profileNext">下一步 →</button>
-    </div>
-</div> <div id="page-intro" class="page">
-
-<!-- ══ PAGE 3: JOB INTRO ══ -->
 <div id="page-intro" class="page">
   <div class="intro-header">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -894,7 +884,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
 
   <div class="intro-content">
 
-    <!-- 工作說明 -->
     <div class="intro-step">
       <div class="step-icon teal">🛒</div>
       <div class="intro-step-text">
@@ -924,7 +913,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       </div>
     </div>
 
-    <!-- 加入流程時間軸 -->
     <div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 24px rgba(1,73,82,0.1);">
       <div style="font-size:13px;font-weight:700;color:#01A7B7;letter-spacing:1px;margin-bottom:16px;">🗺️ 加入流程與點數</div>
 
@@ -983,7 +971,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       </div>
     </div>
 
-    <!-- 點數兌換預覽 -->
     <div style="background:linear-gradient(135deg,#FFD528,#ffc107);border-radius:20px;padding:20px;">
       <div style="font-size:13px;font-weight:700;color:rgba(1,73,82,0.7);letter-spacing:1px;margin-bottom:14px;">🎁 點數可兌換</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -1035,7 +1022,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="training-content">
-    <!-- Step 1: Scan barcode -->
     <div class="mission-card active" id="mission-1">
       <div>
         <div class="mission-title" id="txt-m1Title">📱 掃描商品條碼</div>
@@ -1056,10 +1042,9 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="font-size:13px;color:var(--text-muted);" id="txt-scanProduct">商品：洗髮精 400ml<br>條碼：4710088001234</div>
         </div>
       </div>
-      <button class="btn btn-primary" id="scan-next-btn" onclick="nextMission(1)" style="display:none;" id="txt-scanNext">繼續 →</button>
+      <button class="btn btn-primary" id="scan-next-btn" onclick="nextMission(1)" style="display:none;">繼續 →</button>
     </div>
 
-    <!-- Step 2: Price & Quantity -->
     <div class="mission-card" id="mission-2">
       <div>
         <div class="mission-title" id="txt-m2Title">💰 輸入價格與數量</div>
@@ -1079,7 +1064,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       <button class="btn btn-primary" onclick="nextMission(2)" id="txt-priceNext">確認 →</button>
     </div>
 
-    <!-- Step 3: Store Channel -->
     <div class="mission-card" id="mission-3">
       <div>
         <div class="mission-title" id="txt-m3Title">🏪 購買地點</div>
@@ -1115,7 +1099,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       <button class="btn btn-primary" onclick="nextMission(3)" id="txt-channelNext">確認 →</button>
     </div>
 
-    <!-- Step 4: Category -->
     <div class="mission-card" id="mission-4">
       <div>
         <div class="mission-title" id="txt-m4Title">📦 商品類別</div>
@@ -1151,7 +1134,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       <button class="btn btn-primary" onclick="nextMission(4)" id="txt-categoryNext">確認 →</button>
     </div>
 
-    <!-- Step 5: Promotions -->
     <div class="mission-card" id="mission-5">
       <div>
         <div class="mission-title" id="txt-m5Title">🎯 促銷活動</div>
@@ -1186,7 +1168,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   <div class="training-footer" id="trainingFooter"></div>
 </div>
 
-<!-- ══ PAGE 5: HOME ══ -->
 <div id="page-home" class="page">
   <div class="home-header">
     <div class="home-header-top">
@@ -1215,7 +1196,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="home-content">
-    <!-- Member Status -->
     <div>
       <div class="section-title" id="txt-statusTitle">📋 入會進度</div>
       <div class="status-card">
@@ -1264,7 +1244,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
       </div>
     </div>
 
-    <!-- Surveys -->
     <div>
       <div class="section-title" id="txt-surveyTitle">📋 待完成問卷</div>
       <div class="survey-cards">
@@ -1288,7 +1267,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
   </div>
 
-  <!-- Bottom Nav -->
   <div class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('home')">
       <span class="nav-icon">🏠</span>
@@ -1305,7 +1283,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ PAGE 6: WALLET ══ -->
 <div id="page-wallet" class="page">
   <div class="wallet-header">
     <h1 id="txt-walletH1">獎勵中心</h1>
@@ -1366,7 +1343,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
   </div>
 
-  <!-- Bottom Nav -->
   <div class="bottom-nav">
     <button class="nav-item" onclick="switchTab('home')">
       <span class="nav-icon">🏠</span>
@@ -1383,7 +1359,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ PAGE 7: MY PROFILE ══ -->
 <div id="page-my" class="page">
   <div class="my-header">
     <div class="my-avatar">😊</div>
@@ -1445,7 +1420,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
   </div>
 
-  <!-- Bottom Nav -->
   <div class="bottom-nav">
     <button class="nav-item" onclick="switchTab('home')">
       <span class="nav-icon">🏠</span>
@@ -1462,7 +1436,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ AI CHAT MODAL ══ -->
 <div class="modal-overlay" id="aiModal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -1487,7 +1460,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ COMPLETION OVERLAY ══ -->
 <div class="completion-overlay" id="completionOverlay">
   <div class="completion-card">
     <span class="completion-emoji">🎉</span>
@@ -1501,7 +1473,6 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
-<!-- ══ CONFETTI ══ -->
 <div class="confetti-container" id="confettiContainer"></div>
 
 <script>
