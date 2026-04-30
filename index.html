@@ -388,11 +388,11 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
 .option-btn {
   padding: 16px 12px; border: 2px solid var(--border);
   border-radius: 14px; background: var(--white);
-  font-size: 15px; font-weight: 600; color: var(--text-muted);
+  font-size: 16px; font-weight: 600; color: var(--text-muted);
   cursor: pointer; transition: all 0.2s; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  display: flex; align-items: center; justify-content: center;
 }
-.option-btn .opt-icon { font-size: 28px; }
+.option-btn 
 .option-btn.selected {
   background: var(--teal-dark); color: white; border-color: var(--teal-dark);
 }
@@ -708,6 +708,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   background: rgba(1,40,48,0.85); backdrop-filter: blur(6px);
   align-items: center; justify-content: center; padding: 24px;
 }
+.completion-overlay.show { display: flex; }
 .completion-overlay.show { display: flex; animation: fadeIn 0.3s ease both; }
 .completion-card {
   background: var(--white); border-radius: 28px;
@@ -804,7 +805,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   <div class="profile-form">
     <div class="form-field">
       <label id="txt-nameLabel">您的姓名</label>
-      <input type="text" id="profileName" placeholder="請輸入姓名">
+      <input type="text" id="profileName" placeholder="請輸入姓名" data-placeholder-zh="請輸入姓名" data-placeholder-en="Enter your name">
     </div>
     <div class="form-field">
       <label id="txt-cityLabel">居住縣市</label>
@@ -822,7 +823,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
 
     <div class="form-field">
-      <label>居住區域</label>
+      <label id="txt-districtLabel">居住區域</label>
       <select id="profileDistrict">
         <option value="">請選擇區域</option>
         <option>區域一</option>
@@ -860,7 +861,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     </div>
   </div>
   <div class="profile-footer">
-    <button class="btn btn-primary" onclick="goToIntro()" id="txt-profileNext">下一步 →</button>
+    <button class="btn btn-primary" onclick="goToIntro()" id="txt-profileNext" data-zh="下一步 →" data-en="Next →">下一步 →</button>
   </div>
 </div>
 
@@ -887,29 +888,29 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     <div class="intro-step">
       <div class="step-icon teal">🛒</div>
       <div class="intro-step-text">
-        <h3>掃描商品條碼</h3>
-        <p>購物後用 PanelSmart App 掃描商品條碼，只需幾秒鐘</p>
+        <h3 data-zh="掃描商品條碼" data-en="Scan Product Barcodes">掃描商品條碼</h3>
+        <p data-zh="購物後用 PanelSmart App 掃描商品條碼，只需幾秒鐘" data-en="After shopping, scan product barcodes with PanelSmart App. Takes only seconds!">購物後用 PanelSmart App 掃描商品條碼，只需幾秒鐘</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon yellow">💰</div>
       <div class="intro-step-text">
-        <h3>輸入價格與數量</h3>
-        <p>記錄實際支付金額與購買數量</p>
+        <h3 data-zh="輸入價格與數量" data-en="Enter Price & Quantity">輸入價格與數量</h3>
+        <p data-zh="記錄實際支付金額與購買數量" data-en="Record the actual amount paid and quantity purchased">記錄實際支付金額與購買數量</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon mint">🏪</div>
       <div class="intro-step-text">
-        <h3>選擇購買通路</h3>
-        <p>選擇購買地點（便利商店、超市、量販店等）及品牌</p>
+        <h3 data-zh="選擇購買通路" data-en="Select Purchase Channel">選擇購買通路</h3>
+        <p data-zh="選擇購買地點（便利商店、超市、量販店等）及品牌" data-en="Select where you bought it — convenience store, supermarket, warehouse, etc.">選擇購買地點（便利商店、超市、量販店等）及品牌</p>
       </div>
     </div>
     <div class="intro-step">
       <div class="step-icon dark">🎯</div>
       <div class="intro-step-text">
-        <h3>標記促銷活動</h3>
-        <p>記錄是否有折扣、買一送一或其他優惠活動</p>
+        <h3 data-zh="標記促銷活動" data-en="Mark Promotions">標記促銷活動</h3>
+        <p data-zh="記錄是否有折扣、買一送一或其他優惠活動" data-en="Record if there was a discount, BOGO, or other promotion">記錄是否有折扣、買一送一或其他優惠活動</p>
       </div>
     </div>
 
@@ -922,8 +923,8 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
         </div>
         <div style="padding-top:5px;">
-          <div style="font-size:15px;font-weight:700;color:#014952;">個人資料填寫</div>
-          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">已完成 ✅</div>
+          <div style="font-size:15px;font-weight:700;color:#014952;" data-zh="個人資料填寫" data-en="Profile Setup">個人資料填寫</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;" data-zh="已完成 ✅" data-en="Completed ✅">已完成 ✅</div>
         </div>
       </div>
 
@@ -933,8 +934,9 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
         </div>
         <div style="padding-top:5px;">
-          <div style="font-size:15px;font-weight:700;color:#014952;">訓練任務（5 關卡）</div>
-          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">掃碼 +10 · 價格 +10 · 通路 +10 · 類別 +10 · 完成 +50 = <strong style="color:#014952;">+90 點</strong></div>
+          <div style="font-size:15px;font-weight:700;color:#014952;" data-zh="訓練任務（5 關卡）" data-en="Training (5 Steps)">訓練任務（5 關卡）</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;" data-zh="掃碼 +10 · 價格 +10 · 通路 +10 · 類別 +10 · 完成 +50 = +90 點" data-en="Scan +10 · Price +10 · Channel +10 · Category +10 · Done +50 = +90 pts">掃碼 +10 · 價格 +10 · 通路 +10 · 類別 +10 · 完成 +50 = +90 點</div>
+          <button onclick="retryTraining()" style="margin-top:8px;background:var(--teal-mid);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;" data-zh="重新練習" data-en="Practice Again">重新練習</button>
         </div>
       </div>
 
@@ -944,8 +946,8 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
         </div>
         <div style="padding-top:5px;">
-          <div style="font-size:15px;font-weight:700;color:#4A7A82;">背景問卷 Survey 1</div>
-          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">訓練後 2 天發送 · 約 5 分鐘 · <strong>+100 點</strong></div>
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;" data-zh="背景問卷 Survey 1" data-en="Background Survey 1">背景問卷 Survey 1</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;" data-zh="訓練後 2 天發送 · 約 5 分鐘 · +100 點" data-en="Sent 2 days after training · ~5 min · +100 pts">訓練後 2 天發送 · 約 5 分鐘 · <strong>+100 點</strong></div>
         </div>
       </div>
 
@@ -955,8 +957,8 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="width:2px;height:20px;background:rgba(1,73,82,0.15);margin-top:4px;"></div>
         </div>
         <div style="padding-top:5px;">
-          <div style="font-size:15px;font-weight:700;color:#4A7A82;">深度問卷 Survey 2</div>
-          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">Survey 1 後 2 天發送 · 約 8 分鐘 · <strong>+100 點</strong></div>
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;" data-zh="深度問卷 Survey 2" data-en="In-depth Survey 2">深度問卷 Survey 2</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;" data-zh="Survey 1 後 2 天發送 · 約 8 分鐘 · +100 點" data-en="Sent 2 days after Survey 1 · ~8 min · +100 pts">Survey 1 後 2 天發送 · 約 8 分鐘 · <strong>+100 點</strong></div>
         </div>
       </div>
 
@@ -965,8 +967,8 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
           <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,213,40,0.2);color:#014952;display:flex;align-items:center;justify-content:center;font-size:18px;">🎖️</div>
         </div>
         <div style="padding-top:5px;">
-          <div style="font-size:15px;font-weight:700;color:#4A7A82;">正式會員 Welcome Points</div>
-          <div style="font-size:13px;color:#4A7A82;margin-top:2px;">2 週內完成 2 次合格掃描 · 額外歡迎點數入帳</div>
+          <div style="font-size:15px;font-weight:700;color:#4A7A82;" data-zh="正式會員 Welcome Points" data-en="Full Member Welcome Points">正式會員 Welcome Points</div>
+          <div style="font-size:13px;color:#4A7A82;margin-top:2px;" data-zh="2 週內完成 2 次合格掃描 · 額外歡迎點數入帳" data-en="2 qualifying scans within 2 weeks · Welcome points credited">2 週內完成 2 次合格掃描 · 額外歡迎點數入帳</div>
         </div>
       </div>
     </div>
@@ -1000,172 +1002,176 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="intro-footer">
-    <button class="btn btn-primary" onclick="goToTraining()">開始訓練任務 🎯</button>
-    <button class="btn btn-ghost" onclick="showPage('page-profile')" style="margin-top:8px;color:var(--text-muted);width:100%;text-align:center;">← 返回</button>
+    <button class="btn btn-primary" onclick="startTraining()" data-zh="開始訓練任務 🎯" data-en="Start Training 🎯">開始訓練任務 🎯</button>
+    <button class="btn btn-ghost" onclick="showPage('page-profile')" style="margin-top:8px;color:var(--text-muted);width:100%;text-align:center;" data-zh="← 返回" data-en="← Back">← 返回</button>
   </div>
 </div>
 
 <div id="page-training" class="page">
-  <div class="training-header">
-    <div class="header-top">
-      <div>
-        <h1 id="trainingTitle">訓練任務</h1>
-        <p class="step-info" id="trainingStepInfo">第 1 步，共 5 步</p>
+
+  <!-- ══ STEP 1: 掃描條碼 ══ -->
+  <div id="tstep-1" class="tstep">
+    <div class="training-header">
+      <div class="header-top">
+        <div><h1 class="t-step-label" data-zh="訓練任務" data-en="Training">訓練任務</h1><p class="step-info" data-zh="第 1 步：掃描條碼" data-en="Step 1: Scan Barcode">第 1 步：掃描條碼</p></div>
+        <div class="points-badge">⭐ +10 點</div>
       </div>
-      <div class="points-badge" id="trainingPtsEarned">
-        ⭐ 0 點
-      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:15%"></div></div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="trainingProgress" style="width:20%"></div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:20px;">
+      <div style="background:rgba(1,167,183,0.08);border-left:4px solid var(--teal-mid);border-radius:0 12px 12px 0;padding:14px 16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="掃描商品條碼" data-en="Scan Barcode">掃描商品條碼</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;" data-zh="在 PanelSmart 中，第一步是掃描商品條碼。點擊下方模擬掃描！" data-en="In PanelSmart, the first step is scanning the product barcode. Tap below to simulate!">在 PanelSmart 中，第一步是掃描商品條碼。點擊下方模擬掃描！</div>
+      </div>
+      <div id="scanArea" onclick="doScan()" style="background:var(--teal-dark);border-radius:16px;aspect-ratio:16/9;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <div style="position:absolute;top:16px;left:16px;width:24px;height:24px;border-top:3px solid var(--teal-light);border-left:3px solid var(--teal-light);"></div>
+        <div style="position:absolute;top:16px;right:16px;width:24px;height:24px;border-top:3px solid var(--teal-light);border-right:3px solid var(--teal-light);"></div>
+        <div style="position:absolute;bottom:16px;left:16px;width:24px;height:24px;border-bottom:3px solid var(--teal-light);border-left:3px solid var(--teal-light);"></div>
+        <div style="position:absolute;bottom:16px;right:16px;width:24px;height:24px;border-bottom:3px solid var(--teal-light);border-right:3px solid var(--teal-light);"></div>
+        <div style="position:absolute;left:20px;right:20px;height:2px;background:linear-gradient(90deg,transparent,var(--teal-light),transparent);box-shadow:0 0 8px var(--teal-light);animation:scanLine 2s ease-in-out infinite alternate;top:30%;"></div>
+        <div style="font-size:48px;opacity:0.25;">▮▯▮▮▯▮▯▮▮▯</div>
+        <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:13px;color:rgba(255,255,255,0.6);font-weight:600;" data-zh="點擊模擬掃描" data-en="Tap to Scan">點擊模擬掃描</div>
+      </div>
+      <div id="scanResult" style="display:none;background:rgba(12,239,183,0.08);border:2px solid var(--teal-mint);border-radius:14px;padding:16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:6px;" data-zh="✅ 掃描成功！" data-en="✅ Scan Successful!">✅ 掃描成功！</div>
+        <div style="font-size:13px;color:var(--text-muted);" data-zh="商品：舒潔濕紙巾 80 抽 · 條碼：4710088001234" data-en="Product: Wet Wipes 80pcs · Barcode: 4710088001234">商品：舒潔濕紙巾 80 抽 · 條碼：4710088001234</div>
+      </div>
+      <div id="scanNotFound" style="display:none;background:rgba(255,213,40,0.1);border:2px solid var(--yellow);border-radius:14px;padding:16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="⚠️ 條碼不在資料庫中" data-en="⚠️ Barcode Not Found">⚠️ 條碼不在資料庫中</div>
+        <div style="font-size:13px;color:var(--text-muted);" data-zh="需要額外填寫產品資訊" data-en="Please provide additional product info">需要額外填寫產品資訊</div>
+      </div>
+      <div id="scanButtons" style="display:none;flex-direction:column;gap:10px;">
+        <button class="btn btn-primary" onclick="goScanRouteA()" data-zh="✅ 找到了！直接填寫購買資訊" data-en="✅ Found it! Fill in purchase info">✅ 找到了！直接填寫購買資訊</button>
+        <button class="btn btn-secondary" onclick="goScanRouteB()" data-zh="📷 找不到條碼，需要拍照補充" data-en="📷 No barcode, need to take photos">📷 找不到條碼，需要拍照補充</button>
+      </div>
     </div>
   </div>
 
-  <div class="training-content">
-    <div class="mission-card active" id="mission-1">
-      <div>
-        <div class="mission-title" id="txt-m1Title">📱 掃描商品條碼</div>
-        <div class="mission-desc" id="txt-m1Desc">找到您購買的任何商品，掃描其條碼。點擊下方掃描框來模擬掃描！</div>
-        <div class="mission-pts">+10 點</div>
+  <!-- ══ ROUTE B: 拍照 + 產品資訊 ══ -->
+  <div id="tstep-b1" class="tstep" style="display:none;">
+    <div class="training-header">
+      <div class="header-top">
+        <div><h1 class="t-step-label" data-zh="訓練任務" data-en="Training">訓練任務</h1><p class="step-info" data-zh="補充產品資訊" data-en="Product Info">補充產品資訊</p></div>
+        <div class="points-badge">⭐ 額外資訊</div>
       </div>
-      <div class="scanner-area" onclick="doScan()" id="scanArea">
-        <div class="scanner-corners">
-          <div class="c3"></div>
-        </div>
-        <div class="scan-line"></div>
-        <div class="barcode-icon">▮▯▮▮▯▮▯▮▮▯</div>
-        <div class="scanner-tap-hint" id="txt-tapScan">點擊掃描</div>
-      </div>
-      <div id="scanResult" style="display:none;">
-        <div style="background:rgba(12,239,183,0.1);border:2px solid var(--teal-mint);border-radius:14px;padding:16px;">
-          <div style="font-size:14px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" id="txt-scanSuccess">✅ 掃描成功！</div>
-          <div style="font-size:13px;color:var(--text-muted);" id="txt-scanProduct">商品：洗髮精 400ml<br>條碼：4710088001234</div>
-        </div>
-      </div>
-      <button class="btn btn-primary" id="scan-next-btn" onclick="nextMission(1)" style="display:none;">繼續 →</button>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:30%"></div></div>
     </div>
-
-    <div class="mission-card" id="mission-2">
-      <div>
-        <div class="mission-title" id="txt-m2Title">💰 輸入價格與數量</div>
-        <div class="mission-desc" id="txt-m2Desc">您花了多少錢？買了幾個？</div>
-        <div class="mission-pts">+10 點</div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div style="background:rgba(255,213,40,0.1);border-left:4px solid var(--yellow);border-radius:0 12px 12px 0;padding:14px 16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="請拍攝 3 張照片" data-en="Take 3 Photos">請拍攝 3 張照片</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;" data-zh="當條碼不在資料庫時，需要提供產品照片讓我們識別。" data-en="When barcode is not found, please provide product photos for identification.">當條碼不在資料庫時，需要提供產品照片讓我們識別。</div>
       </div>
-      <div class="price-inputs">
-        <div class="form-field">
-          <label id="txt-priceLabel">價格（元）</label>
-          <input type="number" id="priceInput" placeholder="169" min="0">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div id="photo-front" onclick="simulatePhoto('front')" style="background:white;border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;">
+          <div style="font-size:32px;margin-bottom:6px;">📸</div>
+          <div style="font-size:15px;font-weight:700;color:var(--teal-dark);" data-zh="產品正面" data-en="Front of Product">產品正面</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;" data-zh="點擊模擬拍照" data-en="Tap to simulate photo">點擊模擬拍照</div>
         </div>
-        <div class="form-field">
-          <label id="txt-qtyLabel">數量</label>
-          <input type="number" id="qtyInput" placeholder="1" min="1" value="1">
+        <div id="photo-barcode" onclick="simulatePhoto('barcode')" style="background:white;border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;">
+          <div style="font-size:32px;margin-bottom:6px;">📸</div>
+          <div style="font-size:15px;font-weight:700;color:var(--teal-dark);" data-zh="條碼（正面或背面）" data-en="Barcode (front or back)">條碼（正面或背面）</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;" data-zh="點擊模擬拍照" data-en="Tap to simulate photo">點擊模擬拍照</div>
         </div>
-      </div>
-      <button class="btn btn-primary" onclick="nextMission(2)" id="txt-priceNext">確認 →</button>
-    </div>
-
-    <div class="mission-card" id="mission-3">
-      <div>
-        <div class="mission-title" id="txt-m3Title">🏪 購買地點</div>
-        <div class="mission-desc" id="txt-m3Desc">您在哪裡購買這個商品？</div>
-        <div class="mission-pts">+10 點</div>
-      </div>
-      <div class="option-grid">
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">🏬</span>
-          <span id="txt-supermarket">超市</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">🏪</span>
-          <span id="txt-convenience">便利商店</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">🏢</span>
-          <span id="txt-warehouse">量販店</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">💻</span>
-          <span id="txt-online">網路商店</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">💊</span>
-          <span id="txt-pharmacy">藥局</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'channel')">
-          <span class="opt-icon">🛍️</span>
-          <span id="txt-other">其他</span>
-        </button>
-      </div>
-      <button class="btn btn-primary" onclick="nextMission(3)" id="txt-channelNext">確認 →</button>
-    </div>
-
-    <div class="mission-card" id="mission-4">
-      <div>
-        <div class="mission-title" id="txt-m4Title">📦 商品類別</div>
-        <div class="mission-desc" id="txt-m4Desc">這是哪一類的商品？</div>
-        <div class="mission-pts">+10 點</div>
-      </div>
-      <div class="option-grid">
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">🧴</span>
-          <span id="txt-cat1">個人清潔</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">🍜</span>
-          <span id="txt-cat2">食品飲料</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">🧹</span>
-          <span id="txt-cat3">家庭清潔</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">👶</span>
-          <span id="txt-cat4">嬰幼兒用品</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">🐾</span>
-          <span id="txt-cat5">寵物用品</span>
-        </button>
-        <button class="option-btn" onclick="selectOption(this,'category')">
-          <span class="opt-icon">📦</span>
-          <span id="txt-cat6">其他</span>
-        </button>
-      </div>
-      <button class="btn btn-primary" onclick="nextMission(4)" id="txt-categoryNext">確認 →</button>
-    </div>
-
-    <div class="mission-card" id="mission-5">
-      <div>
-        <div class="mission-title" id="txt-m5Title">🎯 促銷活動</div>
-        <div class="mission-desc" id="txt-m5Desc">購買時有優惠嗎？請勾選所有符合的項目（可跳過）</div>
-        <div class="mission-pts">+50 點</div>
-      </div>
-      <div class="promo-list">
-        <div class="promo-item" onclick="togglePromo(this)">
-          <div class="promo-check"></div>
-          <div class="promo-text" id="txt-promo1">無折扣 / 正常售價</div>
-        </div>
-        <div class="promo-item" onclick="togglePromo(this)">
-          <div class="promo-check"></div>
-          <div class="promo-text" id="txt-promo2">折扣 / 特賣（減價）</div>
-        </div>
-        <div class="promo-item" onclick="togglePromo(this)">
-          <div class="promo-check"></div>
-          <div class="promo-text" id="txt-promo3">買一送一 / 多件優惠</div>
-        </div>
-        <div class="promo-item" onclick="togglePromo(this)">
-          <div class="promo-check"></div>
-          <div class="promo-text" id="txt-promo4">贈品 / 加量不加價</div>
-        </div>
-        <div class="promo-item" onclick="togglePromo(this)">
-          <div class="promo-check"></div>
-          <div class="promo-text" id="txt-promo5">紅利點數 / 回饋活動</div>
+        <div id="photo-label" onclick="simulatePhoto('label')" style="background:white;border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;">
+          <div style="font-size:32px;margin-bottom:6px;">📸</div>
+          <div style="font-size:15px;font-weight:700;color:var(--teal-dark);" data-zh="產品標籤（背面）" data-en="Product Label (back)">產品標籤（背面）</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;" data-zh="含品牌、成分、產地資訊" data-en="Incl. brand, ingredients, origin">含品牌、成分、產地資訊</div>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="completeTraining()" id="txt-completeBtn">完成訓練！🎉</button>
+      <div class="form-field">
+        <label style="font-size:14px;font-weight:700;color:var(--teal-dark);" data-zh="品牌名稱" data-en="Brand Name">品牌名稱</label>
+        <input type="text" id="brandInput" placeholder="例如：舒潔、好奇" style="background:white;border:2px solid var(--border);border-radius:12px;padding:14px 16px;font-size:17px;width:100%;outline:none;font-family:inherit;">
+      </div>
+      <div class="form-field">
+        <label style="font-size:14px;font-weight:700;color:var(--teal-dark);" data-zh="產品名稱" data-en="Product Name">產品名稱</label>
+        <input type="text" id="productNameInput" placeholder="例如：濕紙巾 80 抽" style="background:white;border:2px solid var(--border);border-radius:12px;padding:14px 16px;font-size:17px;width:100%;outline:none;font-family:inherit;">
+      </div>
+      <div class="form-field">
+        <label style="font-size:14px;font-weight:700;color:var(--teal-dark);" data-zh="包裝容量／重量" data-en="Pack Size / Weight">包裝容量／重量</label>
+        <input type="text" id="packSizeInput" placeholder="例如：350ml、80 片、600g" style="background:white;border:2px solid var(--border);border-radius:12px;padding:14px 16px;font-size:17px;width:100%;outline:none;font-family:inherit;">
+      </div>
+      <button class="btn btn-primary" onclick="completeRouteB()" data-zh="下一步 →" data-en="Next →">下一步 →</button>
     </div>
   </div>
-  <div class="training-footer" id="trainingFooter"></div>
+
+  <!-- ══ STEP 2: 購買通路（A+B 共用） ══ -->
+  <div id="tstep-2" class="tstep" style="display:none;">
+    <div class="training-header">
+      <div class="header-top">
+        <div><h1 class="t-step-label" data-zh="訓練任務" data-en="Training">訓練任務</h1><p class="step-info" data-zh="購買地點" data-en="Purchase Location">購買地點</p></div>
+        <div class="points-badge">⭐ +10 點</div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:55%"></div></div>
+    </div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div style="background:rgba(1,167,183,0.08);border-left:4px solid var(--teal-mid);border-radius:0 12px 12px 0;padding:14px 16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="購買地點" data-en="Purchase Location">購買地點</div>
+        <div style="font-size:13px;color:var(--text-muted);" data-zh="先選通路類型，再選品牌店家。" data-en="Select channel type, then choose a brand.">先選通路類型，再選品牌店家。</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="channelTypeGrid">
+        <button class="option-btn" onclick="selectChannelType(this,'convenience')" data-zh="便利商店" data-en="Convenience Store">便利商店</button>
+        <button class="option-btn" onclick="selectChannelType(this,'supermarket')" data-zh="超市" data-en="Supermarket">超市</button>
+        <button class="option-btn" onclick="selectChannelType(this,'warehouse')" data-zh="量販店" data-en="Warehouse Store">量販店</button>
+        <button class="option-btn" onclick="selectChannelType(this,'online')" data-zh="網路購物" data-en="Online Shopping">網路購物</button>
+        <button class="option-btn" onclick="selectChannelType(this,'delivery')" data-zh="外送平台" data-en="Delivery">外送平台</button>
+        <button class="option-btn" onclick="selectChannelType(this,'other')" data-zh="其他" data-en="Other">其他</button>
+      </div>
+      <div id="brandSection" style="display:none;">
+        <div style="font-size:14px;font-weight:700;color:var(--teal-dark);margin-bottom:10px;" id="brandLabel">選擇品牌</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="brandList"></div>
+      </div>
+      <button class="btn btn-primary" id="step2Btn" onclick="completeStep2()" style="display:none;" data-zh="下一步 →" data-en="Next →">下一步 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: 價格數量 + 促銷 + 自用送人 ══ -->
+  <div id="tstep-3" class="tstep" style="display:none;">
+    <div class="training-header">
+      <div class="header-top">
+        <div><h1 class="t-step-label" data-zh="訓練任務" data-en="Training">訓練任務</h1><p class="step-info" data-zh="購買細節" data-en="Purchase Details">購買細節</p></div>
+        <div class="points-badge">⭐ +70 點</div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-field">
+          <label style="font-size:14px;font-weight:700;color:var(--teal-dark);" data-zh="數量（個）" data-en="Quantity">數量（個）</label>
+          <input type="number" id="qtyInput" min="1" value="1" style="background:white;border:2px solid var(--border);border-radius:12px;padding:14px;font-size:22px;font-weight:700;text-align:center;width:100%;outline:none;">
+        </div>
+        <div class="form-field">
+          <label style="font-size:14px;font-weight:700;color:var(--teal-dark);" data-zh="總價（元）" data-en="Total Price">總價（元）</label>
+          <input type="number" id="priceInput" min="0" placeholder="49" style="background:white;border:2px solid var(--border);border-radius:12px;padding:14px;font-size:22px;font-weight:700;text-align:center;width:100%;outline:none;">
+        </div>
+      </div>
+      <div style="background:rgba(255,213,40,0.1);border-left:4px solid var(--yellow);border-radius:0 12px 12px 0;padding:14px 16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="促銷活動（可跳過）" data-en="Promotions (optional)">促銷活動（可跳過）</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="promo-item" onclick="togglePromo(this)"><div class="promo-check"></div><div class="promo-text" data-zh="無促銷／不知道" data-en="No promotion / Unknown">無促銷／不知道</div></div>
+        <div class="promo-item" onclick="togglePromo(this)"><div class="promo-check"></div><div class="promo-text" data-zh="買一送一／買多有折扣" data-en="Buy 1 Get 1 / Multi-buy discount">買一送一／買多有折扣</div></div>
+        <div class="promo-item" onclick="togglePromo(this)"><div class="promo-check"></div><div class="promo-text" data-zh="降價／打折" data-en="Price reduction / Discount">降價／打折</div></div>
+        <div class="promo-item" onclick="togglePromo(this)"><div class="promo-check"></div><div class="promo-text" data-zh="使用點數／折價券" data-en="Points / Voucher used">使用點數／折價券</div></div>
+        <div class="promo-item" onclick="togglePromo(this)"><div class="promo-check"></div><div class="promo-text" data-zh="贈品／加量不加價" data-en="Free gift / Bonus quantity">贈品／加量不加價</div></div>
+      </div>
+      <div style="background:rgba(1,167,183,0.08);border-left:4px solid var(--teal-mid);border-radius:0 12px 12px 0;padding:14px 16px;">
+        <div style="font-size:15px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="自用或送人？" data-en="For yourself or a gift?">自用或送人？</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="promo-item" id="useBtn" onclick="selectUseItem(this,'self')">
+          <div class="promo-check" id="useCheck"></div>
+          <div class="promo-text" data-zh="自用（含部分送人）" data-en="Personal use (incl. partial gifting)">自用（含部分送人）</div>
+        </div>
+        <div class="promo-item" id="giftBtn" onclick="selectUseItem(this,'gift')">
+          <div class="promo-check" id="giftCheck"></div>
+          <div class="promo-text" data-zh="送人" data-en="Gift">送人</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="completeTraining()" style="margin-top:4px;" data-zh="完成訓練！🎉" data-en="Complete Training! 🎉">完成訓練！🎉</button>
+    </div>
+  </div>
+
+  
 </div>
 
 <div id="page-home" class="page">
@@ -1196,6 +1202,14 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="home-content">
+    <!-- Training CTA -->
+    <div id="trainingCTA" style="background:linear-gradient(135deg,var(--teal-dark),#016875);border-radius:20px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:white;margin-bottom:4px;" id="ctaTitle">訓練任務</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);" data-cta-desc>完成訓練可獲得點數獎勵</div>
+      </div>
+      <div style="background:var(--yellow);color:var(--teal-dark);border-radius:12px;padding:10px 18px;font-size:15px;font-weight:700;" data-cta-btn>開始訓練</div>
+    </div>
     <div>
       <div class="section-title" id="txt-statusTitle">📋 入會進度</div>
       <div class="status-card">
@@ -1268,26 +1282,12 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('home')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label" id="txt-navHome">首頁</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('wallet')">
-      <span class="nav-icon">🎁</span>
-      <span class="nav-label" id="txt-navRewards">獎勵</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('my')">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label" id="txt-navProfile">我的</span>
-    </button>
+    <button class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-zh="首頁" data-en="Home">首頁</span></button>
+    <button class="nav-item" onclick="switchTab('wallet')"><span class="nav-icon">🎁</span><span class="nav-label" data-zh="獎勵" data-en="Rewards">獎勵</span></button>
+    <button class="nav-item" onclick="switchTab('points')"><span class="nav-icon">⭐</span><span class="nav-label" data-zh="點數" data-en="Points">點數</span></button>
+    <button class="nav-item" onclick="switchTab('my')"><span class="nav-icon">👤</span><span class="nav-label" data-zh="我的" data-en="Profile">我的</span></button>
   </div>
-</div>
-
-<div id="page-wallet" class="page">
-  <div class="wallet-header">
-    <h1 id="txt-walletH1">獎勵中心</h1>
-    <div class="wallet-big-pts">
-      <div class="wallet-pts-num" id="walletPtsNum">200</div>
+  </div>
       <div class="wallet-pts-label" id="txt-walletPtsLabel">可用點數</div>
     </div>
   </div>
@@ -1295,7 +1295,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     <div>
       <div class="section-title" id="txt-redeemTitle">兌換獎勵</div>
       <div class="rewards-grid">
-        <div class="reward-card" onclick="redeemReward(this,'7-11 購物金 50元','200')">
+        <div class="reward-card" onclick="redeemItem(this)">
           <div class="reward-card-img">🏪</div>
           <div class="reward-card-name" id="txt-reward1">7-11 購物金</div>
           <div class="reward-card-pts">200 點</div>
@@ -1344,18 +1344,73 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="bottom-nav">
-    <button class="nav-item" onclick="switchTab('home')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label" id="txt-navHome2">首頁</span>
-    </button>
-    <button class="nav-item active" onclick="switchTab('wallet')">
-      <span class="nav-icon">🎁</span>
-      <span class="nav-label" id="txt-navRewards2">獎勵</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('my')">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label" id="txt-navProfile2">我的</span>
-    </button>
+    <button class="nav-item" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-zh="首頁" data-en="Home">首頁</span></button>
+    <button class="nav-item active" onclick="switchTab('wallet')"><span class="nav-icon">🎁</span><span class="nav-label" data-zh="獎勵" data-en="Rewards">獎勵</span></button>
+    <button class="nav-item" onclick="switchTab('points')"><span class="nav-icon">⭐</span><span class="nav-label" data-zh="點數" data-en="Points">點數</span></button>
+    <button class="nav-item" onclick="switchTab('my')"><span class="nav-icon">👤</span><span class="nav-label" data-zh="我的" data-en="Profile">我的</span></button>
+  </div>
+  </div>
+    <div style="background:rgba(255,255,255,0.1);border-radius:16px;padding:20px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:600;margin-bottom:4px;" data-zh="累計點數" data-en="Total Points">累計點數</div>
+        <div style="font-size:42px;font-weight:900;color:var(--yellow);line-height:1;" id="pointsPageTotal">0</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;" data-zh="可兌換" data-en="Redeemable">可兌換</div>
+        <div style="font-size:22px;font-weight:700;color:var(--teal-light);" id="pointsPageAvail">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:24px;display:flex;flex-direction:column;gap:12px;padding-bottom:100px;">
+    <div style="font-size:16px;font-weight:700;color:var(--teal-dark);margin-bottom:4px;" data-zh="點數明細" data-en="Points Detail">點數明細</div>
+    <div id="pointsHistoryList" style="display:flex;flex-direction:column;gap:10px;">
+      <!-- populated by JS -->
+    </div>
+    <div id="pointsEmptyMsg" style="text-align:center;padding:40px 20px;color:var(--text-muted);display:none;">
+      <div style="font-size:36px;margin-bottom:12px;">📭</div>
+      <div style="font-size:15px;" data-zh="還沒有點數紀錄" data-en="No points history yet">還沒有點數紀錄</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-zh="首頁" data-en="Home">首頁</span></button>
+    <button class="nav-item" onclick="switchTab('wallet')"><span class="nav-icon">🎁</span><span class="nav-label" data-zh="獎勵" data-en="Rewards">獎勵</span></button>
+    <button class="nav-item active" onclick="switchTab('points')"><span class="nav-icon">⭐</span><span class="nav-label" data-zh="點數" data-en="Points">點數</span></button>
+    <button class="nav-item" onclick="switchTab('my')"><span class="nav-icon">👤</span><span class="nav-label" data-zh="我的" data-en="Profile">我的</span></button>
+  </div>
+</div>
+
+<div id="page-points" class="page">
+  <div style="background:var(--teal-dark);padding:56px 24px 32px;border-radius:0 0 32px 32px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <button onclick="switchTab('home')" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;width:36px;height:36px;color:white;font-size:18px;cursor:pointer;">←</button>
+      <h1 style="font-size:24px;font-weight:700;color:white;" data-zh="點數紀錄" data-en="Points History">點數紀錄</h1>
+    </div>
+    <div style="background:rgba(255,255,255,0.1);border-radius:16px;padding:20px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;" data-zh="累計點數" data-en="Total Points">累計點數</div>
+        <div style="font-size:42px;font-weight:900;color:var(--yellow);line-height:1;" id="pointsPageTotal">0</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;" data-zh="可兌換" data-en="Redeemable">可兌換</div>
+        <div style="font-size:22px;font-weight:700;color:var(--teal-light);" id="pointsPageAvail">0</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:24px;display:flex;flex-direction:column;gap:12px;padding-bottom:100px;">
+    <div style="font-size:16px;font-weight:700;color:var(--teal-dark);" data-zh="點數明細" data-en="Points Detail">點數明細</div>
+    <div id="pointsHistoryList" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <div id="pointsEmptyMsg" style="text-align:center;padding:40px 20px;color:var(--text-muted);display:none;">
+      <div style="font-size:36px;margin-bottom:12px;">📭</div>
+      <div data-zh="還沒有點數紀錄" data-en="No points history yet">還沒有點數紀錄</div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-zh="首頁" data-en="Home">首頁</span></button>
+    <button class="nav-item" onclick="switchTab('wallet')"><span class="nav-icon">🎁</span><span class="nav-label" data-zh="獎勵" data-en="Rewards">獎勵</span></button>
+    <button class="nav-item active" onclick="switchTab('points')"><span class="nav-icon">⭐</span><span class="nav-label" data-zh="點數" data-en="Points">點數</span></button>
+    <button class="nav-item" onclick="switchTab('my')"><span class="nav-icon">👤</span><span class="nav-label" data-zh="我的" data-en="Profile">我的</span></button>
   </div>
 </div>
 
@@ -1421,24 +1476,12 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 
   <div class="bottom-nav">
-    <button class="nav-item" onclick="switchTab('home')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label" id="txt-navHome3">首頁</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('wallet')">
-      <span class="nav-icon">🎁</span>
-      <span class="nav-label" id="txt-navRewards3">獎勵</span>
-    </button>
-    <button class="nav-item active" onclick="switchTab('my')">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label" id="txt-navProfile3">我的</span>
-    </button>
+    <button class="nav-item" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label" data-zh="首頁" data-en="Home">首頁</span></button>
+    <button class="nav-item" onclick="switchTab('wallet')"><span class="nav-icon">🎁</span><span class="nav-label" data-zh="獎勵" data-en="Rewards">獎勵</span></button>
+    <button class="nav-item" onclick="switchTab('points')"><span class="nav-icon">⭐</span><span class="nav-label" data-zh="點數" data-en="Points">點數</span></button>
+    <button class="nav-item active" onclick="switchTab('my')"><span class="nav-icon">👤</span><span class="nav-label" data-zh="我的" data-en="Profile">我的</span></button>
   </div>
-</div>
-
-<div class="modal-overlay" id="aiModal">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
+  </div>
     <div class="modal-header">
       <span style="font-size:22px;">🤖</span>
       <h3 id="txt-aiModalTitle">Worldpanel+ 小幫手</h3>
@@ -1460,6 +1503,20 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
   </div>
 </div>
 
+<!-- STEP REWARD OVERLAY - Global, outside all pages -->
+<div id="stepRewardOverlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(1,40,48,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:white;border-radius:28px;padding:36px 28px;text-align:center;width:100%;max-width:320px;">
+    <div style="font-size:64px;margin-bottom:12px;" id="rewardEmoji">⭐</div>
+    <h2 style="font-size:24px;font-weight:700;color:var(--teal-dark);margin-bottom:8px;" id="rewardTitle">完成！</h2>
+    <p style="font-size:15px;color:var(--text-muted);margin-bottom:20px;" id="rewardDesc">繼續完成下一步！</p>
+    <div style="background:var(--yellow);border-radius:16px;padding:16px;margin-bottom:20px;">
+      <div style="font-size:48px;font-weight:900;color:var(--teal-dark);line-height:1;" id="rewardPts">+10</div>
+      <div style="font-size:14px;color:rgba(1,73,82,0.7);margin-top:4px;font-weight:600;" data-zh="點數已入帳" data-en="Points Credited">點數已入帳</div>
+    </div>
+    <button class="btn btn-primary" onclick="dismissReward()" data-zh="繼續 →" data-en="Continue →">繼續 →</button>
+  </div>
+</div>
+
 <div class="completion-overlay" id="completionOverlay">
   <div class="completion-card">
     <span class="completion-emoji">🎉</span>
@@ -1467,7 +1524,7 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
     <p id="txt-completeP">太棒了！您已完成所有訓練任務，可以開始正式記錄購物了！</p>
     <div class="completion-pts">
       <div class="big-pts" id="txt-completePts">+200</div>
-      <div class="pts-word" id="txt-ptsWord">點數已入帳</div>
+      <div class="pts-word" id="txt-ptsWord" data-zh="點數已入帳" data-en="Points Credited">點數已入帳</div>
     </div>
     <button class="btn btn-primary" onclick="goToHome()" id="txt-goHomeBtn">前往主頁 🏠</button>
   </div>
@@ -1477,15 +1534,15 @@ html, body { margin:0; padding:0; font-family: 'Noto Sans TC', sans-serif; backg
 
 <script>
 // ── STATE ──
-let currentLang = 'zh';
-let trainingPts = 0;
-let currentMission = 1;
-let userPoints = 0;
-let userName = '會員';
-let scanDone = false;
+var currentLang = 'zh';
+var trainingPts = 0;
+var currentMission = 1;
+var userPoints = 0;
+var userName = '會員';
+var scanDone = false;
 
 // ── TRANSLATIONS ──
-const T = {
+var T = {
   zh: {
     langBtn: 'EN',
     bySub: 'by Numerator',
@@ -1505,6 +1562,7 @@ const T = {
     nameLabel: '您的姓名',
     cityLabel: '居住縣市',
     districtLabel: '居住區域',
+    hhLabel: '家庭人數（含自己）',
     birthYearLabel: '出生年份',
     birthDateLabel: '出生月日',
     profileNext: '下一步 →',
@@ -1633,6 +1691,8 @@ const T = {
     profileP: 'Complete info helps us provide better surveys',
     nameLabel: 'Your Name',
     cityLabel: 'City / County',
+    districtLabel: 'District / Area',
+    hhLabel: 'Household Size (incl. yourself)',
     districtLabel: 'District',
     birthYearLabel: 'Birth Year',
     birthDateLabel: 'Birth Month & Day',
@@ -1753,12 +1813,48 @@ function toggleLang() {
 }
 
 function applyLang() {
-  const t = T[currentLang];
-  document.getElementById('langToggle').textContent = t.langBtn;
+  var t = T[currentLang];
+  if (!t) return;
+  var langBtn = document.getElementById('langToggle');
+  if (langBtn) langBtn.textContent = t.langBtn;
 
-  const ids = ['bySub','welcomeP','joinBtn','loginBtn','demoBtn','phoneLabel',
+  // Update all elements with data-zh / data-en attributes
+  // Only update leaf nodes (no child elements) to avoid destroying HTML structure
+  document.querySelectorAll('[data-zh]').forEach(function(el) {
+    if (el.children.length === 0) {
+      var val = currentLang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+      if (val) el.textContent = val;
+    }
+  });
+  // Update profile placeholders
+  var pName = document.getElementById('profileName');
+  if (pName) pName.placeholder = currentLang==='zh' ? '請輸入姓名' : 'Enter your name';
+  var pCity = document.getElementById('profileCity');
+  if (pCity) pCity.options[0].text = currentLang==='zh' ? '請選擇縣市' : 'Select city/county';
+  var pDistrict = document.getElementById('profileDistrict');
+  if (pDistrict) pDistrict.options[0].text = currentLang==='zh' ? '請選擇區域' : 'Select district';
+  var pHH = document.getElementById('profileHH');
+  if (pHH) pHH.placeholder = currentLang==='zh' ? '例如：3' : 'e.g. 3';
+  var pYear = document.getElementById('profileBirthYear');
+  if (pYear && pYear.options[0]) pYear.options[0].text = currentLang==='zh' ? '請選擇年份' : 'Select year';
+  var pMonth = document.getElementById('profileBirthMonth');
+  if (pMonth && pMonth.options[0]) pMonth.options[0].text = currentLang==='zh' ? '月' : 'Month';
+  var pDay = document.getElementById('profileBirthDay');
+  if (pDay && pDay.options[0]) pDay.options[0].text = currentLang==='zh' ? '日' : 'Day';
+
+  // Update placeholders
+  var brandInput = document.getElementById('brandInput');
+  if (brandInput) brandInput.placeholder = currentLang==='zh' ? '例如：舒潔、好奇' : 'e.g. Kleenex, Pampers';
+  var productNameInput = document.getElementById('productNameInput');
+  if (productNameInput) productNameInput.placeholder = currentLang==='zh' ? '例如：濕紙巾 80 抽' : 'e.g. Wet Wipes 80pcs';
+  var packSizeInput = document.getElementById('packSizeInput');
+  if (packSizeInput) packSizeInput.placeholder = currentLang==='zh' ? '例如：350ml、80 片' : 'e.g. 350ml, 80pcs';
+  var priceInput = document.getElementById('priceInput');
+  if (priceInput) priceInput.placeholder = currentLang==='zh' ? '49' : '1.99';
+
+  var ids = ['bySub','welcomeP','joinBtn','loginBtn','demoBtn','phoneLabel',
     'otpLabel','otpHint','loginNext','backBtn','profileStep','profileH1','profileP',
-    'nameLabel','cityLabel','districtLabel','birthYearLabel','birthDateLabel','profileNext',
+    'nameLabel','cityLabel','districtLabel','hhLabel','birthYearLabel','birthDateLabel','profileNext',
     'introStep','introH1',
     'introP','step1H','step1P','step2H','step2P','step3H','step3P','step4H','step4P',
     'rewardH','rewardP','startTraining','backProfile','m1Title','m1Desc','tapScan',
@@ -1775,35 +1871,43 @@ function applyLang() {
     'menu3H','menu3P','menu4H','menu4P','logoutH','logoutP','aiModalTitle','aiWelcome',
     'completeH2','completeP','completePts','ptsWord','goHomeBtn'];
 
-  ids.forEach(id => {
-    const el = document.getElementById('txt-' + id);
+  ids.forEach(function(id) {
+    var el = document.getElementById('txt-' + id);
     if (el && t[id] !== undefined) el.textContent = t[id];
   });
 
   // welcomeH2 with line break
-  const wh2 = document.getElementById('txt-welcomeH2');
-  if (wh2) wh2.innerHTML = t.welcomeH2.replace('\n','<br>');
+  var wh2 = document.getElementById('txt-welcomeH2');
+  if (wh2 && t.welcomeH2) {
+    wh2.innerHTML = t.welcomeH2.replace('\n','<br>');
+  }
 
   // Quick questions
-  const qqs = document.querySelectorAll('.quick-q');
-  if (t.quickQs) qqs.forEach((q,i) => { if(t.quickQs[i]) q.textContent = t.quickQs[i]; });
+  var qqs = document.querySelectorAll('.quick-q');
+  if (t.quickQs) qqs.forEach(function(q,i) { if(t.quickQs[i]) q.textContent = t.quickQs[i]; });
 
   // Greeting
   updateGreeting();
   updateMyName();
+  updateTrainingCTA();
 }
 
 // ── PAGE NAVIGATION ──
 function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  document.getElementById(pageId).scrollTop = 0;
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+    p.scrollTop = 0;
+  });
+  var el = document.getElementById(pageId);
+  el.classList.add('active');
+  el.scrollTop = 0;
+  setTimeout(function() { el.scrollTop = 0; }, 50);
 }
 
 // ── WELCOME PAGE ──
 function showLoginForm(mode) {
   document.getElementById('welcome-main-btns').style.display = 'none';
-  const form = document.getElementById('loginForm');
+  var form = document.getElementById('loginForm');
   form.classList.add('show');
 }
 
@@ -1813,19 +1917,19 @@ function hideLoginForm() {
   document.getElementById('otpSection').style.display = 'none';
 }
 
-let loginStep = 1;
+var loginStep = 1;
 function handleLoginNext() {
   if (loginStep === 1) {
-    const phone = document.getElementById('phoneInput').value;
+    var phone = document.getElementById('phoneInput').value;
     if (!phone) { document.getElementById('phoneInput').focus(); return; }
     document.getElementById('otpSection').style.display = 'block';
     document.getElementById('txt-loginNext').textContent = currentLang==='zh' ? '驗證並繼續' : 'Verify & Continue';
     document.querySelectorAll('.otp-digit')[0].focus();
     loginStep = 2;
   } else {
-    const otp = [...document.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+    var otp = Array.from(document.querySelectorAll('.otp-digit')).map(function(i){ return i.value; }).join('');
     if (otp.length < 6) { document.querySelectorAll('.otp-digit')[0].focus(); return; }
-    const name = document.getElementById('profileName');
+    var name = document.getElementById('profileName');
     if (!name) { showPage('page-profile'); return; }
     showPage('page-profile');
     loginStep = 1;
@@ -1836,9 +1940,9 @@ function otpNav(input) {
   if (input.value && input.nextElementSibling && input.nextElementSibling.classList.contains('otp-digit')) {
     input.nextElementSibling.focus();
   }
-  const otp = [...document.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+  var otp = Array.from(document.querySelectorAll('.otp-digit')).map(function(i){ return i.value; }).join('');
   if (otp.length === 6) {
-    setTimeout(() => { showPage('page-profile'); loginStep = 1; }, 400);
+    setTimeout(function() { showPage('page-profile'); loginStep = 1; }, 400);
   }
 }
 
@@ -1848,7 +1952,7 @@ function demoLogin() {
 
 // ── PROFILE PAGE ──
 function selectHH(btn, val) {
-  document.querySelectorAll('.hh-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.hh-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
 }
 
@@ -1857,7 +1961,7 @@ function toggleChip(chip) {
 }
 
 function goToIntro() {
-  const name = document.getElementById('profileName').value || (currentLang==='zh'?'新會員':'New Member');
+  var name = document.getElementById('profileName').value || (currentLang==='zh'?'新會員':'New Member');
   userName = name;
   showPage('page-intro');
 }
@@ -1872,132 +1976,686 @@ function goToTraining() {
 
 // ── TRAINING ──
 function updateTrainingUI() {
-  const steps = {zh:['第 1 步，共 5 步','第 2 步，共 5 步','第 3 步，共 5 步','第 4 步，共 5 步','第 5 步，共 5 步'],
+  var steps = {zh:['第 1 步，共 5 步','第 2 步，共 5 步','第 3 步，共 5 步','第 4 步，共 5 步','第 5 步，共 5 步'],
                   en:['Step 1 of 5','Step 2 of 5','Step 3 of 5','Step 4 of 5','Step 5 of 5']};
-  const titles = {zh:['訓練任務','訓練任務','訓練任務','訓練任務','訓練任務'],
+  var titles = {zh:['訓練任務','訓練任務','訓練任務','訓練任務','訓練任務'],
                    en:['Training','Training','Training','Training','Training']};
-  const pcts = [20,40,60,80,100];
+  var pcts = [20,40,60,80,100];
   document.getElementById('trainingStepInfo').textContent = steps[currentLang][currentMission-1];
   document.getElementById('trainingTitle').textContent = titles[currentLang][currentMission-1];
   document.getElementById('trainingProgress').style.width = pcts[currentMission-1] + '%';
   document.getElementById('trainingPtsEarned').textContent = '⭐ ' + trainingPts + (currentLang==='zh'?' 點':' pts');
 }
 
-let channelSelected = false;
-let categorySelected = false;
+var channelSelected = false;
+var categorySelected = false;
+var useSelected = false;
+var trainingPtsEarned = [false, false, false];
+var trainingStatus = 'notStarted'; // notStarted | inProgress | completed
+var trainingCurrentStep = 1;
+var currentChannelType = '';
+var pointsHistory = [
+  { desc: '訓練完成獎勵', descEn: 'Training Complete Bonus', pts: 70, month: '5 月' },
+  { desc: '訓練：購買地點', descEn: 'Training: Purchase Location', pts: 10, month: '5 月' },
+  { desc: '訓練：掃描條碼', descEn: 'Training: Scan Barcode', pts: 10, month: '5 月' },
+  { desc: '帳號建立', descEn: 'Account Created', pts: 0, month: '5 月' }
+];
+var pendingNextStep = 0;
+var photoDone = {front:false, barcode:false, label:false};
+
+var CHANNEL_BRANDS = {
+  zh: {
+    convenience: ['7-11 統一超商','全家便利商店','萊爾富','OK mart','其他便利商店'],
+    supermarket: ['全聯福利中心','家樂福','頂好 Wellcome','美廉社','其他超市'],
+    warehouse: ['家樂福量販','大潤發','愛買','好市多 Costco','其他量販'],
+    online: ['蝦皮購物','momo 購物','PChome','博客來','LINE 購物','其他網路'],
+    delivery: ['Uber Eats','foodpanda','其他外送平台'],
+    other: ['藥局／藥妝店','市場／傳統市場','便利超商以外小店','其他']
+  },
+  en: {
+    convenience: ['7-Eleven','FamilyMart','Lawson','Circle K','Other Convenience Store'],
+    supermarket: ['Carrefour','Walmart','Tesco','AEON','Other Supermarket'],
+    warehouse: ['Costco','Sams Club','Metro','Other Warehouse'],
+    online: ['Shopee','Lazada','Amazon','Tokopedia','Other Online'],
+    delivery: ['Uber Eats','foodpanda','GrabFood','Other Delivery'],
+    other: ['Pharmacy','Traditional Market','Small Grocery','Other']
+  }
+};
 
 function doScan() {
   if (scanDone) return;
-  const area = document.getElementById('scanArea');
-  area.style.background = '#016875';
-  setTimeout(() => {
-    area.style.background = 'var(--teal-dark)';
+  var area = document.getElementById('scanArea');
+  if (area) area.style.background = '#016875';
+  setTimeout(function() {
+    if (area) area.style.background = 'var(--teal-dark)';
     document.getElementById('scanResult').style.display = 'block';
-    document.getElementById('scan-next-btn').style.display = 'flex';
+    document.getElementById('scanButtons').style.display = 'flex';
     scanDone = true;
-    trainingPts += 10;
-    updateTrainingUI();
+    if (!trainingPtsEarned[0]) {
+      trainingPts += 10;
+      trainingPtsEarned[0] = true;
+      userPoints = trainingPts;
+      pointsHistory.unshift({ desc: '訓練：掃描條碼', descEn: 'Training: Scan Barcode', pts: 10, month: (new Date().getMonth()+1) + ' 月' });
+    }
+    showStepReward(10,
+      currentLang==='zh' ? '掃描成功！' : 'Scan Complete!',
+      currentLang==='zh' ? '選擇找到或找不到條碼' : 'Select barcode found or not',
+      function() {}
+    );
   }, 600);
 }
 
-function selectOption(btn, group) {
-  const parent = btn.closest('.option-grid');
-  parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+function goScanRouteA() {
+  showStep(2);
+}
+
+function goScanRouteB() {
+  document.getElementById('scanResult').style.display = 'none';
+  document.getElementById('scanNotFound').style.display = 'block';
+  showStep('b1');
+}
+
+function simulatePhoto(type) {
+  photoDone[type] = true;
+  var el = document.getElementById('photo-' + type);
+  if (el) {
+    el.style.background = 'rgba(12,239,183,0.08)';
+    el.style.borderColor = 'var(--teal-mint)';
+    el.style.borderStyle = 'solid';
+    el.querySelector('div').textContent = '✅';
+  }
+}
+
+function completeRouteB() {
+  showStep(2);
+}
+
+function showStep(n) {
+  trainingCurrentStep = n;
+  var all = document.querySelectorAll('.tstep');
+  for (var i = 0; i < all.length; i++) all[i].style.display = 'none';
+  var el = document.getElementById('tstep-' + n);
+  if (el) el.style.display = 'block';
+  var pg = document.getElementById('page-training');
+  if (pg) { pg.scrollTop = 0; setTimeout(function(){ pg.scrollTop = 0; }, 50); }
+  window.scrollTo(0,0);
+}
+
+function selectChannelType(btn, type) {
+  document.querySelectorAll('#channelTypeGrid .option-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
-  if (group === 'channel') channelSelected = true;
-  if (group === 'category') categorySelected = true;
+  currentChannelType = type;
+  channelSelected = false;
+  var brands = (CHANNEL_BRANDS[currentLang] || CHANNEL_BRANDS['zh'])[type] || [];
+  var labels = currentLang==='zh' ?
+    {convenience:'選擇便利商店',supermarket:'選擇超市品牌',warehouse:'選擇量販店',online:'選擇購物平台',delivery:'選擇外送平台',other:'選擇類型'} :
+    {convenience:'Select Store',supermarket:'Select Supermarket',warehouse:'Select Warehouse',online:'Select Platform',delivery:'Select Delivery',other:'Select Type'};
+  document.getElementById('brandLabel').textContent = labels[type] || '選擇品牌';
+  var list = document.getElementById('brandList');
+  list.innerHTML = '';
+  brands.forEach(function(b) {
+    var div = document.createElement('div');
+    div.className = 'promo-item';
+    div.innerHTML = '<div class="promo-check"></div><div class="promo-text">' + b + '</div>';
+    div.onclick = function() {
+      document.querySelectorAll('#brandList .promo-item').forEach(function(i) {
+        i.classList.remove('selected');
+        i.querySelector('.promo-check').textContent = '';
+      });
+      div.classList.add('selected');
+      div.querySelector('.promo-check').textContent = '✓';
+      channelSelected = true;
+      document.getElementById('step2Btn').style.display = 'flex';
+    };
+    list.appendChild(div);
+  });
+  document.getElementById('brandSection').style.display = 'block';
+  document.getElementById('step2Btn').style.display = 'none';
+}
+
+function completeStep2() {
+  if (!channelSelected) return;
+  if (!trainingPtsEarned[1]) {
+    trainingPts += 10;
+    trainingPtsEarned[1] = true;
+    userPoints = trainingPts;
+    pointsHistory.unshift({ desc: '訓練：購買地點', descEn: 'Training: Purchase Location', pts: 10, month: (new Date().getMonth()+1) + ' 月' });
+  }
+  showStepReward(10,
+    currentLang==='zh' ? '購買地點完成！' : 'Location Done!',
+    currentLang==='zh' ? '繼續填寫購買細節' : 'Continue with purchase details',
+    function() { showStep(3); }
+  );
+}
+
+function selectUseItem(item, type) {
+  document.getElementById('useBtn').classList.remove('selected');
+  document.getElementById('giftBtn').classList.remove('selected');
+  document.getElementById('useCheck').textContent = '';
+  document.getElementById('giftCheck').textContent = '';
+  item.classList.add('selected');
+  var checkId = type === 'self' ? 'useCheck' : 'giftCheck';
+  document.getElementById(checkId).textContent = '✓';
+  useSelected = true;
+}
+
+function showStepReward(pts, title, desc, nextFn) {
+  document.getElementById('rewardPts').textContent = '+' + pts;
+  document.getElementById('rewardTitle').textContent = title;
+  document.getElementById('rewardDesc').textContent = desc;
+  document.getElementById('rewardEmoji').textContent = pts >= 50 ? '🎉' : '⭐';
+  pendingNextStep = nextFn;
+  document.getElementById('stepRewardOverlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function dismissReward() {
+  document.getElementById('stepRewardOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+  if (typeof pendingNextStep === 'function') pendingNextStep();
+  pendingNextStep = 0;
+}
+
+function completeTraining() {
+  if (!trainingPtsEarned[2]) {
+    trainingPts += 70;
+    trainingPtsEarned[2] = true;
+    userPoints = trainingPts;
+    pointsHistory.unshift({ desc: '訓練完成獎勵', descEn: 'Training Complete Bonus', pts: 70, month: (new Date().getMonth()+1) + ' 月' });
+  }
+  trainingStatus = 'completed';
+  showStepReward(70,
+    currentLang==='zh' ? '訓練完成！🎉' : 'Training Complete! 🎉',
+    currentLang==='zh' ? '您已完成所有訓練！' : 'All training done!',
+    function() {
+      launchConfetti();
+      var overlay = document.getElementById('completionOverlay');
+      overlay.style.display = 'flex';
+      document.getElementById('txt-completePts').textContent = '+' + trainingPts;
+    }
+  );
+}
+
+function goToTraining() {
+  trainingPts = 0;
+  trainingPtsEarned = [false, false, false];
+  scanDone = false;
+  channelSelected = false;
+  categorySelected = false;
+  useSelected = false;
+  currentChannelType = '';
+  photoDone = {front:false, barcode:false, label:false};
+  showPage('page-training');
+  showStep(1);
 }
 
 function togglePromo(item) {
   item.classList.toggle('selected');
-  const check = item.querySelector('.promo-check');
-  check.textContent = item.classList.contains('selected') ? '✓' : '';
-}
-
-function nextMission(missionNum) {
-  // Validate
-  if (missionNum === 2) {
-    const price = document.getElementById('priceInput').value;
-    if (!price) { document.getElementById('priceInput').focus(); return; }
-    trainingPts += 10;
-  }
-  if (missionNum === 3) {
-    if (!channelSelected) { return; }
-    trainingPts += 10;
-  }
-  if (missionNum === 4) {
-    if (!categorySelected) { return; }
-    trainingPts += 10;
-  }
-
-  document.getElementById('mission-' + missionNum).classList.remove('active');
-  currentMission = missionNum + 1;
-  const next = document.getElementById('mission-' + currentMission);
-  if (next) {
-    next.classList.add('active');
-    updateTrainingUI();
-    document.getElementById('page-training').scrollTop = 0;
-  }
-}
-
-function completeTraining() {
-  trainingPts += 50;
-  userPoints = trainingPts;
-  launchConfetti();
-  document.getElementById('completionOverlay').classList.add('show');
-  document.getElementById('txt-completePts').textContent = '+' + trainingPts;
+  var check = item.querySelector('.promo-check');
+  if (check) check.textContent = item.classList.contains('selected') ? '✓' : '';
 }
 
 function goToHome() {
-  document.getElementById('completionOverlay').classList.remove('show');
+  document.getElementById('completionOverlay').style.display = 'none';
   document.getElementById('confettiContainer').innerHTML = '';
   showPage('page-home');
   updateHomeUI();
+  updateTrainingCTA();
 }
 
+
+function addPointsHistory(desc, pts) {
+  var now = new Date();
+  var month = (now.getMonth() + 1) + ' 月';
+  pointsHistory.unshift({ desc: desc, descEn: desc, pts: pts, month: month });
+}
+
+function updatePointsPage() {
+  var total = pointsHistory.reduce(function(sum, item){ return sum + item.pts; }, 0);
+  if (userPoints > total) total = userPoints;
+  var el1 = document.getElementById('pointsPageTotal');
+  var el2 = document.getElementById('pointsPageAvail');
+  if (el1) el1.textContent = total;
+  if (el2) el2.textContent = total;
+
+  var list = document.getElementById('pointsHistoryList');
+  var empty = document.getElementById('pointsEmptyMsg');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (pointsHistory.length === 0) {
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  pointsHistory.forEach(function(item) {
+    var div = document.createElement('div');
+    div.style.cssText = 'background:white;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px rgba(1,73,82,0.08);';
+    var label = currentLang === 'zh' ? item.desc : (item.descEn || item.desc);
+    div.innerHTML =
+      '<div>' +
+      '<div style="font-size:15px;font-weight:700;color:var(--text);">' + label + '</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-top:3px;">' + item.month + '</div>' +
+      '</div>' +
+      '<div style="font-size:18px;font-weight:900;color:var(--teal-mint);">+' + item.pts + '</div>';
+    list.appendChild(div);
+  });
+}
+
+function redeemItem(name, pts) {
+  if (userPoints < parseInt(pts)) {
+    alert(currentLang==='zh' ? '點數不足！需要 ' + pts + ' 點，目前有 ' + userPoints + ' 點。' : 'Not enough points! Need ' + pts + ', you have ' + userPoints + '.');
+    return;
+  }
+  if (confirm(currentLang==='zh' ? '確定兌換「' + name + '」？扣除 ' + pts + ' 點' : 'Redeem "' + name + '"? Deduct ' + pts + ' pts')) {
+    userPoints -= parseInt(pts);
+    pointsHistory.unshift({ desc: '兌換：' + name, descEn: 'Redeemed: ' + name, pts: -parseInt(pts), month: (new Date().getMonth()+1) + ' 月' });
+    updateHomeUI();
+    alert(currentLang==='zh' ? '兌換成功！' : 'Redeemed successfully!');
+  }
+}
+
+function startTraining() {
+  // Called from intro page "Start Training" button
+  trainingStatus = 'inProgress';
+  trainingCurrentStep = 1;
+  scanDone = false;
+  channelSelected = false;
+  categorySelected = false;
+  useSelected = false;
+  currentChannelType = '';
+  photoDone = {front:false, barcode:false, label:false};
+  document.getElementById('scanResult').style.display = 'none';
+  document.getElementById('scanNotFound').style.display = 'none';
+  document.getElementById('scanButtons').style.display = 'none';
+  document.querySelectorAll('#channelTypeGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('#categoryGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.promo-item').forEach(function(b){ b.classList.remove('selected'); var c=b.querySelector('.promo-check'); if(c) c.textContent=''; });
+  var bi = document.getElementById('brandSection'); if(bi) bi.style.display='none';
+  var s2 = document.getElementById('step2Btn'); if(s2) s2.style.display='none';
+  showPage('page-training');
+  showStep(trainingCurrentStep);
+  updateTrainingCTA();
+}
+
+function continueTraining() {
+  showPage('page-training');
+  showStep(trainingCurrentStep);
+}
+
+function retryTraining() {
+  // Reset everything for a fresh attempt but keep points earned
+  trainingStatus = 'inProgress';
+  trainingCurrentStep = 1;
+  scanDone = false;
+  channelSelected = false;
+  categorySelected = false;
+  useSelected = false;
+  currentChannelType = '';
+  photoDone = {front:false, barcode:false, label:false};
+  document.getElementById('scanResult').style.display = 'none';
+  document.getElementById('scanNotFound').style.display = 'none';
+  document.getElementById('scanButtons').style.display = 'none';
+  document.querySelectorAll('#channelTypeGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('#categoryGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.promo-item').forEach(function(b){ b.classList.remove('selected'); var c=b.querySelector('.promo-check'); if(c) c.textContent=''; });
+  var bi = document.getElementById('brandSection'); if(bi) bi.style.display='none';
+  var s2 = document.getElementById('step2Btn'); if(s2) s2.style.display='none';
+  var pi = document.getElementById('priceInput'); if(pi) pi.value='';
+  showPage('page-training');
+  showStep(1);
+  updateTrainingCTA();
+}
+
+function updateTrainingCTA() {
+  var cta = document.getElementById('trainingCTA');
+  if (!cta) return;
+  var btnEl = cta.querySelector('[data-cta-btn]');
+  var descEl = cta.querySelector('[data-cta-desc]');
+  var titleEl = document.getElementById('ctaTitle');
+  if (titleEl) titleEl.textContent = currentLang==='zh' ? '訓練任務' : 'Training';
+  if (trainingStatus === 'notStarted') {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '開始訓練' : 'Start Training';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '完成訓練可獲得點數獎勵' : 'Earn points by completing training';
+    cta.onclick = function(){ showPage('page-intro'); };
+  } else if (trainingStatus === 'inProgress') {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '繼續訓練' : 'Continue';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '訓練進行中，點擊繼續' : 'Training in progress, tap to continue';
+    cta.onclick = function(){ continueTraining(); };
+  } else {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '重新練習' : 'Practice Again';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '可反覆練習，點數只給一次' : 'Practice anytime, points earned once';
+    cta.onclick = function(){ retryTraining(); };
+  }
+}
+
+// ── HOME UI ──
 function updateHomeUI() {
-  const pts = userPoints || 200;
-  document.getElementById('homePtsAmount').textContent = pts;
-  document.getElementById('walletPtsNum').textContent = pts;
-  document.getElementById('pts-progress-text').textContent = pts + ' / 500 ' + (currentLang==='zh'?'點':'pts');
-  document.getElementById('homePtsBar').style.width = Math.min((pts/500)*100,100) + '%';
+  var pts = userPoints || 0;
+  var el1 = document.getElementById('homePtsAmount');
+  var el2 = document.getElementById('walletPtsNum');
+  var el3 = document.getElementById('pts-progress-text');
+  var el4 = document.getElementById('homePtsBar');
+  if (el1) el1.textContent = pts;
+  if (el2) el2.textContent = pts;
+  if (el3) el3.textContent = pts + ' / 500 ' + (currentLang==='zh'?'點':'pts');
+  if (el4) el4.style.width = Math.min((pts/500)*100,100) + '%';
   updateGreeting();
   updateMyName();
 }
 
 function updateGreeting() {
-  const now = new Date();
-  const h = now.getHours();
-  let g;
+  var now = new Date();
+  var h = now.getHours();
+  var greetEl = document.getElementById('homeGreeting');
+  var dateEl = document.getElementById('homeDate');
+  if (!greetEl) return;
   if (currentLang === 'zh') {
-    g = h < 12 ? '早安！' : h < 18 ? '午安！' : '晚安！';
-    const name = userName !== '會員' ? userName + '，' : '';
-    document.getElementById('homeGreeting').textContent = g + name;
-    const days = ['日','一','二','三','四','五','六'];
-    document.getElementById('homeDate').textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日，星期${days[now.getDay()]}`;
+    var g = h < 12 ? '早安！' : h < 18 ? '午安！' : '晚安！';
+    var name = userName && userName !== '新會員' ? userName + '，' : '';
+    greetEl.textContent = g + name;
+    var days = ['日','一','二','三','四','五','六'];
+    if (dateEl) dateEl.textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日，星期' + days[now.getDay()];
   } else {
-    g = h < 12 ? 'Good Morning!' : h < 18 ? 'Good Afternoon!' : 'Good Evening!';
-    const name = userName !== '會員' && userName !== 'New Member' ? ', ' + userName : '!';
-    document.getElementById('homeGreeting').textContent = g;
-    const opts = { year:'numeric', month:'long', day:'numeric', weekday:'long' };
-    document.getElementById('homeDate').textContent = now.toLocaleDateString('en-US', opts);
+    var g = h < 12 ? 'Good Morning!' : h < 18 ? 'Good Afternoon!' : 'Good Evening!';
+    greetEl.textContent = g;
+    if (dateEl) dateEl.textContent = now.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
   }
 }
 
 function updateMyName() {
-  const el = document.getElementById('myName');
-  if (el) el.textContent = userName !== '會員' ? userName : (currentLang==='zh'?'會員':'Member');
+  var el = document.getElementById('myName');
+  if (el) el.textContent = userName || (currentLang==='zh'?'會員':'Member');
 }
 
 // ── TABS ──
 function switchTab(tab) {
-  const pages = { home:'page-home', wallet:'page-wallet', my:'page-my' };
-  showPage(pages[tab]);
+  var pages = { home:'page-home', wallet:'page-wallet', my:'page-my', points:'page-points' };
+  if (pages[tab]) showPage(pages[tab]);
   updateHomeUI();
+  if (tab === 'points') updatePointsPage();
+  if (tab === 'home') updateTrainingCTA();
+}
+
+// ── REWARDS ──
+function redeemReward(card, name, pts) {
+  if (userPoints < parseInt(pts)) {
+    alert(currentLang==='zh' ? '點數不足！需要 ' + pts + ' 點，目前有 ' + userPoints + ' 點。' : 'Not enough points! Need ' + pts + ', you have ' + userPoints + '.');
+    return;
+  }
+  userPoints -= parseInt(pts);
+  updateHomeUI();
+  alert(currentLang==='zh' ? '已成功兌換「' + name + '」！\n' + pts + ' 點已扣除。' : 'Successfully redeemed "' + name + '"!\n' + pts + ' points deducted.');
+}
+
+// ── LOGOUT ──
+function logout() {
+  if (confirm(currentLang==='zh'?'確定要登出嗎？':'Confirm logout?')) {
+    userName = '會員'; userPoints = 0; trainingPts = 0;
+    trainingPtsEarned = [false,false,false];
+    scanDone = false; channelSelected = false; categorySelected = false;
+    document.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
+    document.querySelectorAll('.promo-item').forEach(function(b) {b.classList.remove('selected');var c=b.querySelector('.promo-check');if(c)c.textContent='';});
+    var pn = document.getElementById('profileName'); if(pn) pn.value='';
+    var pi = document.getElementById('priceInput'); if(pi) pi.value='';
+    var sr = document.getElementById('scanResult'); if(sr) sr.style.display='none';
+    document.getElementById('loginForm').classList.remove('show');
+    document.getElementById('welcome-main-btns').style.display='block';
+    var ph = document.getElementById('phoneInput'); if(ph) ph.value='';
+    document.querySelectorAll('.otp-digit').forEach(function(d) { d.value=''; });
+    document.getElementById('otpSection').style.display='none';
+    loginStep=1;
+    chatHistory=[];
+    var cm = document.getElementById('chatMessages');
+    if(cm) cm.innerHTML='<div class="chat-msg bot">' + T[currentLang].aiWelcome + '</div>';
+    showPage('page-welcome');
+  }
+}
+
+
+function togglePromo(item) {
+  item.classList.toggle('selected');
+  var check = item.querySelector('.promo-check');
+  if (check) check.textContent = item.classList.contains('selected') ? '✓' : '';
+}
+
+function goToHome() {
+  document.getElementById('completionOverlay').style.display = 'none';
+  document.getElementById('confettiContainer').innerHTML = '';
+  showPage('page-home');
+  updateHomeUI();
+  updateTrainingCTA();
 }
 
 // ── AI CHAT ──
-let chatHistory = [];
+
+function addPointsHistory(desc, pts) {
+  var now = new Date();
+  var month = (now.getMonth() + 1) + ' 月';
+  pointsHistory.unshift({ desc: desc, descEn: desc, pts: pts, month: month });
+}
+
+function updatePointsPage() {
+  var total = pointsHistory.reduce(function(sum, item){ return sum + item.pts; }, 0);
+  if (userPoints > total) total = userPoints;
+  var el1 = document.getElementById('pointsPageTotal');
+  var el2 = document.getElementById('pointsPageAvail');
+  if (el1) el1.textContent = total;
+  if (el2) el2.textContent = total;
+
+  var list = document.getElementById('pointsHistoryList');
+  var empty = document.getElementById('pointsEmptyMsg');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (pointsHistory.length === 0) {
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  pointsHistory.forEach(function(item) {
+    var div = document.createElement('div');
+    div.style.cssText = 'background:white;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px rgba(1,73,82,0.08);';
+    var label = currentLang === 'zh' ? item.desc : (item.descEn || item.desc);
+    div.innerHTML =
+      '<div>' +
+      '<div style="font-size:15px;font-weight:700;color:var(--text);">' + label + '</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-top:3px;">' + item.month + '</div>' +
+      '</div>' +
+      '<div style="font-size:18px;font-weight:900;color:var(--teal-mint);">+' + item.pts + '</div>';
+    list.appendChild(div);
+  });
+}
+
+function redeemItem(name, pts) {
+  if (userPoints < parseInt(pts)) {
+    alert(currentLang==='zh' ? '點數不足！需要 ' + pts + ' 點，目前有 ' + userPoints + ' 點。' : 'Not enough points! Need ' + pts + ', you have ' + userPoints + '.');
+    return;
+  }
+  if (confirm(currentLang==='zh' ? '確定兌換「' + name + '」？扣除 ' + pts + ' 點' : 'Redeem "' + name + '"? Deduct ' + pts + ' pts')) {
+    userPoints -= parseInt(pts);
+    pointsHistory.unshift({ desc: '兌換：' + name, descEn: 'Redeemed: ' + name, pts: -parseInt(pts), month: (new Date().getMonth()+1) + ' 月' });
+    updateHomeUI();
+    alert(currentLang==='zh' ? '兌換成功！' : 'Redeemed successfully!');
+  }
+}
+
+function startTraining() {
+  // Called from intro page "Start Training" button
+  trainingStatus = 'inProgress';
+  trainingCurrentStep = 1;
+  scanDone = false;
+  channelSelected = false;
+  categorySelected = false;
+  useSelected = false;
+  currentChannelType = '';
+  photoDone = {front:false, barcode:false, label:false};
+  document.getElementById('scanResult').style.display = 'none';
+  document.getElementById('scanNotFound').style.display = 'none';
+  document.getElementById('scanButtons').style.display = 'none';
+  document.querySelectorAll('#channelTypeGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('#categoryGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.promo-item').forEach(function(b){ b.classList.remove('selected'); var c=b.querySelector('.promo-check'); if(c) c.textContent=''; });
+  var bi = document.getElementById('brandSection'); if(bi) bi.style.display='none';
+  var s2 = document.getElementById('step2Btn'); if(s2) s2.style.display='none';
+  showPage('page-training');
+  showStep(trainingCurrentStep);
+  updateTrainingCTA();
+}
+
+function continueTraining() {
+  showPage('page-training');
+  showStep(trainingCurrentStep);
+}
+
+function retryTraining() {
+  // Reset everything for a fresh attempt but keep points earned
+  trainingStatus = 'inProgress';
+  trainingCurrentStep = 1;
+  scanDone = false;
+  channelSelected = false;
+  categorySelected = false;
+  useSelected = false;
+  currentChannelType = '';
+  photoDone = {front:false, barcode:false, label:false};
+  document.getElementById('scanResult').style.display = 'none';
+  document.getElementById('scanNotFound').style.display = 'none';
+  document.getElementById('scanButtons').style.display = 'none';
+  document.querySelectorAll('#channelTypeGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('#categoryGrid .option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.promo-item').forEach(function(b){ b.classList.remove('selected'); var c=b.querySelector('.promo-check'); if(c) c.textContent=''; });
+  var bi = document.getElementById('brandSection'); if(bi) bi.style.display='none';
+  var s2 = document.getElementById('step2Btn'); if(s2) s2.style.display='none';
+  var pi = document.getElementById('priceInput'); if(pi) pi.value='';
+  showPage('page-training');
+  showStep(1);
+  updateTrainingCTA();
+}
+
+function updateTrainingCTA() {
+  var cta = document.getElementById('trainingCTA');
+  if (!cta) return;
+  var btnEl = cta.querySelector('[data-cta-btn]');
+  var descEl = cta.querySelector('[data-cta-desc]');
+  var titleEl = document.getElementById('ctaTitle');
+  if (titleEl) titleEl.textContent = currentLang==='zh' ? '訓練任務' : 'Training';
+  if (trainingStatus === 'notStarted') {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '開始訓練' : 'Start Training';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '完成訓練可獲得點數獎勵' : 'Earn points by completing training';
+    cta.onclick = function(){ showPage('page-intro'); };
+  } else if (trainingStatus === 'inProgress') {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '繼續訓練' : 'Continue';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '訓練進行中，點擊繼續' : 'Training in progress, tap to continue';
+    cta.onclick = function(){ continueTraining(); };
+  } else {
+    if (btnEl) btnEl.textContent = currentLang==='zh' ? '重新練習' : 'Practice Again';
+    if (descEl) descEl.textContent = currentLang==='zh' ? '可反覆練習，點數只給一次' : 'Practice anytime, points earned once';
+    cta.onclick = function(){ retryTraining(); };
+  }
+}
+
+// ── HOME UI ──
+function updateHomeUI() {
+  var pts = userPoints || 0;
+  var el1 = document.getElementById('homePtsAmount');
+  var el2 = document.getElementById('walletPtsNum');
+  var el3 = document.getElementById('pts-progress-text');
+  var el4 = document.getElementById('homePtsBar');
+  if (el1) el1.textContent = pts;
+  if (el2) el2.textContent = pts;
+  if (el3) el3.textContent = pts + ' / 500 ' + (currentLang==='zh'?'點':'pts');
+  if (el4) el4.style.width = Math.min((pts/500)*100,100) + '%';
+  updateGreeting();
+  updateMyName();
+}
+
+function updateGreeting() {
+  var now = new Date();
+  var h = now.getHours();
+  var greetEl = document.getElementById('homeGreeting');
+  var dateEl = document.getElementById('homeDate');
+  if (!greetEl) return;
+  if (currentLang === 'zh') {
+    var g = h < 12 ? '早安！' : h < 18 ? '午安！' : '晚安！';
+    var name = userName && userName !== '新會員' ? userName + '，' : '';
+    greetEl.textContent = g + name;
+    var days = ['日','一','二','三','四','五','六'];
+    if (dateEl) dateEl.textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日，星期' + days[now.getDay()];
+  } else {
+    var g = h < 12 ? 'Good Morning!' : h < 18 ? 'Good Afternoon!' : 'Good Evening!';
+    greetEl.textContent = g;
+    if (dateEl) dateEl.textContent = now.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
+  }
+}
+
+function updateMyName() {
+  var el = document.getElementById('myName');
+  if (el) el.textContent = userName || (currentLang==='zh'?'會員':'Member');
+}
+
+// ── TABS ──
+function switchTab(tab) {
+  var pages = { home:'page-home', wallet:'page-wallet', my:'page-my', points:'page-points' };
+  if (pages[tab]) showPage(pages[tab]);
+  updateHomeUI();
+  if (tab === 'points') updatePointsPage();
+  if (tab === 'home') updateTrainingCTA();
+}
+
+// ── REWARDS ──
+function redeemReward(card, name, pts) {
+  if (userPoints < parseInt(pts)) {
+    alert(currentLang==='zh' ? '點數不足！需要 ' + pts + ' 點，目前有 ' + userPoints + ' 點。' : 'Not enough points! Need ' + pts + ', you have ' + userPoints + '.');
+    return;
+  }
+  userPoints -= parseInt(pts);
+  updateHomeUI();
+  alert(currentLang==='zh' ? '已成功兌換「' + name + '」！\n' + pts + ' 點已扣除。' : 'Successfully redeemed "' + name + '"!\n' + pts + ' points deducted.');
+}
+
+// ── LOGOUT ──
+function logout() {
+  if (confirm(currentLang==='zh'?'確定要登出嗎？':'Confirm logout?')) {
+    userName = '會員'; userPoints = 0; trainingPts = 0;
+    trainingPtsEarned = [false,false,false];
+    scanDone = false; channelSelected = false; categorySelected = false;
+    document.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
+    document.querySelectorAll('.promo-item').forEach(function(b) {b.classList.remove('selected');var c=b.querySelector('.promo-check');if(c)c.textContent='';});
+    var pn = document.getElementById('profileName'); if(pn) pn.value='';
+    var pi = document.getElementById('priceInput'); if(pi) pi.value='';
+    var sr = document.getElementById('scanResult'); if(sr) sr.style.display='none';
+    document.getElementById('loginForm').classList.remove('show');
+    document.getElementById('welcome-main-btns').style.display='block';
+    var ph = document.getElementById('phoneInput'); if(ph) ph.value='';
+    document.querySelectorAll('.otp-digit').forEach(function(d) { d.value=''; });
+    document.getElementById('otpSection').style.display='none';
+    loginStep=1;
+    chatHistory=[];
+    var cm = document.getElementById('chatMessages');
+    if(cm) cm.innerHTML='<div class="chat-msg bot">' + T[currentLang].aiWelcome + '</div>';
+    showPage('page-welcome');
+  }
+}
+
+
+function togglePromo(item) {
+  item.classList.toggle('selected');
+  var check = item.querySelector('.promo-check');
+  if (check) check.textContent = item.classList.contains('selected') ? '✓' : '';
+}
+
+function goToHome() {
+  document.getElementById('completionOverlay').style.display = 'none';
+  document.getElementById('confettiContainer').innerHTML = '';
+  showPage('page-home');
+  updateHomeUI();
+  updateTrainingCTA();
+}
+
+// ── AI CHAT ──
+var chatHistory = [];
 
 function openAI() {
   document.getElementById('aiModal').classList.add('show');
@@ -2009,45 +2667,39 @@ function closeAI() {
 }
 
 function askQuick(btn) {
-  const question = btn.textContent;
+  var question = btn.textContent;
   document.getElementById('chatInput').value = question;
   sendChat();
 }
 
 async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
+  var input = document.getElementById('chatInput');
+  var msg = input.value.trim();
   if (!msg) return;
   input.value = '';
 
   appendMsg(msg, 'user');
   chatHistory.push({ role:'user', parts:[{text: msg}] });
 
-  const typingEl = appendMsg(currentLang==='zh'?'正在輸入...':'Typing...', 'bot typing');
+  var typingEl = appendMsg(currentLang==='zh'?'正在輸入...':'Typing...', 'bot typing');
 
-  const sysPrompt = currentLang === 'zh' ?
-    `你是 Worldpanel Plus（樣本+）的 AI 小幫手，專門解答台灣消費者調查會員的問題。
-Worldpanel Plus 是一個消費者調查 App，會員需要用 PanelSmart App 掃描購買商品的條碼、記錄價格和數量、選擇購買地點和促銷活動。
-完成訓練可獲得 200 點，調查問卷各獲 100 點，點數可以兌換 7-11 購物金、咖啡券、電影票等獎勵。
-請用親切、簡短的繁體中文回答，不要超過 100 字。` :
-    `You are the AI assistant for Worldpanel Plus, helping consumer panel members in Taiwan.
-Worldpanel Plus is a consumer survey app where members scan product barcodes, record prices/quantities, and select purchase locations using PanelSmart App.
-Training earns 200 points, surveys earn 100 points each, redeemable for 7-11 vouchers, coffee, movie tickets.
-Reply in friendly, concise English under 80 words.`;
+  var sysPrompt = currentLang === 'zh' ?
+    "你是 Worldpanel Plus（樣本+）的 AI 小幫手，專門解答台灣消費者調查會員的問題。\nWorldpanel Plus 是一個消費者調查 App，會員需要用 PanelSmart App 掃描購買商品的條碼、記錄價格和數量、選擇購買地點和促銷活動。\n完成訓練可獲得 200 點，調查問卷各獲 100 點，點數可以兌換 7-11 購物金、咖啡券、電影票等獎勵。\n請用親切、簡短的繁體中文回答，不要超過 100 字。" :
+    "You are the AI assistant for Worldpanel Plus, helping consumer panel members in Taiwan.\nWorldpanel Plus is a consumer survey app where members scan product barcodes, record prices/quantities, and select purchase locations using PanelSmart App.\nTraining earns 200 points, surveys earn 100 points each, redeemable for 7-11 vouchers, coffee, movie tickets.\nReply in friendly, concise English under 80 words.";
 
   try {
-    const payload = {
+    var payload = {
       system_instruction: { parts: [{ text: sysPrompt }] },
       contents: chatHistory,
       generationConfig: { temperature: 0.7, maxOutputTokens: 200 }
     };
-    const resp = await fetch('/api/chat', {
+    var resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const data = await resp.json();
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text
+    var data = await resp.json();
+    var reply = data?.candidates?.[0]?.content?.parts?.[0]?.text
       || (currentLang==='zh'?'抱歉，暫時無法回應，請稍後再試！':'Sorry, I\'m unavailable right now. Please try again!');
     typingEl.remove();
     appendMsg(reply, 'bot');
@@ -2059,8 +2711,8 @@ Reply in friendly, concise English under 80 words.`;
 }
 
 function appendMsg(text, cls) {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
+  var msgs = document.getElementById('chatMessages');
+  var div = document.createElement('div');
   div.className = 'chat-msg ' + cls;
   div.textContent = text;
   msgs.appendChild(div);
@@ -2070,12 +2722,12 @@ function appendMsg(text, cls) {
 
 // ── CONFETTI ──
 function launchConfetti() {
-  const container = document.getElementById('confettiContainer');
-  const colors = ['#FFD528','#01A7B7','#2EEFEE','#0CEFB7','#014952','#ffffff'];
-  for (let i = 0; i < 80; i++) {
-    const piece = document.createElement('div');
+  var container = document.getElementById('confettiContainer');
+  var colors = ['#FFD528','#01A7B7','#2EEFEE','#0CEFB7','#014952','#ffffff'];
+  for (var i = 0; i < 80; i++) {
+    var piece = document.createElement('div');
     piece.className = 'confetti-piece';
-    const size = 6 + Math.random()*8;
+    var size = 6 + Math.random()*8;
     piece.style.left = Math.random()*100 + '%';
     piece.style.top = '-20px';
     piece.style.width = size + 'px';
@@ -2086,18 +2738,18 @@ function launchConfetti() {
     piece.style.animationDelay = (Math.random()*0.8) + 's';
     container.appendChild(piece);
   }
-  setTimeout(() => { container.innerHTML = ''; }, 5000);
+  setTimeout(function() { container.innerHTML = ''; }, 5000);
 }
 
 // ── REWARDS ──
 function redeemReward(card, name, pts) {
   if (userPoints < parseInt(pts)) {
-    alert(currentLang==='zh'?`點數不足！需要 ${pts} 點，目前有 ${userPoints} 點。`:`Not enough points! Need ${pts}, you have ${userPoints}.`);
+    alert(currentLang==='zh'?'點數不足！需要 ' + pts + ' 點，目前有 ' + userPoints + ' 點。':'Not enough points! Need ' + pts + ', you have ' + userPoints + '.');
     return;
   }
   userPoints -= parseInt(pts);
   updateHomeUI();
-  const msg = currentLang==='zh'?`已成功兌換「${name}」！🎉\n${pts} 點已扣除。`:`Successfully redeemed "${name}"! 🎉\n${pts} points deducted.`;
+  var msg = currentLang==='zh'?'已成功兌換「' + name + '」！🎉\n' + pts + ' 點已扣除。':'Successfully redeemed "' + name + '"! 🎉\n' + pts + ' points deducted.';
   alert(msg);
 }
 
@@ -2111,20 +2763,20 @@ function logout() {
     scanDone = false;
     channelSelected = false;
     categorySelected = false;
-    document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
-    document.querySelectorAll('.promo-item').forEach(b=>{b.classList.remove('selected');b.querySelector('.promo-check').textContent='';});
-    document.querySelectorAll('.hh-btn').forEach(b=>b.classList.remove('selected'));
-    document.querySelectorAll('.store-chip').forEach(b=>b.classList.remove('selected'));
+    document.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
+    document.querySelectorAll('.promo-item').forEach(function(b) {b.classList.remove('selected');b.querySelector('.promo-check').textContent='';});
+    document.querySelectorAll('.hh-btn').forEach(function(b) { b.classList.remove('selected'); });
+    document.querySelectorAll('.store-chip').forEach(function(b) { b.classList.remove('selected'); });
     document.getElementById('profileName').value='';
     document.getElementById('priceInput').value='';
     document.getElementById('scanResult').style.display='none';
     document.getElementById('scan-next-btn').style.display='none';
-    document.querySelectorAll('.mission-card').forEach(c=>c.classList.remove('active'));
+    document.querySelectorAll('.mission-card').forEach(function(c) { c.classList.remove('active'); });
     document.getElementById('mission-1').classList.add('active');
     document.getElementById('loginForm').classList.remove('show');
     document.getElementById('welcome-main-btns').style.display='block';
     document.getElementById('phoneInput').value='';
-    document.querySelectorAll('.otp-digit').forEach(d=>d.value='');
+    document.querySelectorAll('.otp-digit').forEach(function(d) { d.value=''; });
     document.getElementById('otpSection').style.display='none';
     loginStep=1;
     chatHistory=[];
@@ -2136,11 +2788,11 @@ function logout() {
 
 // ── POPULATE BIRTH YEAR ──
 function populateBirthYear() {
-  const sel = document.getElementById('profileBirthYear');
+  var sel = document.getElementById('profileBirthYear');
   if (!sel) return;
-  const currentYear = new Date().getFullYear();
-  for (let y = currentYear - 18; y >= currentYear - 90; y--) {
-    const opt = document.createElement('option');
+  var currentYear = new Date().getFullYear();
+  for (var y = currentYear - 18; y >= currentYear - 90; y--) {
+    var opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y + ' 年';
     sel.appendChild(opt);
@@ -2149,21 +2801,21 @@ function populateBirthYear() {
 
 // ── UPDATE DAYS based on month ──
 function updateDays() {
-  const month = parseInt(document.getElementById('profileBirthMonth').value);
-  const year = parseInt(document.getElementById('profileBirthYear').value) || 2000;
-  const daysSel = document.getElementById('profileBirthDay');
-  const prevVal = daysSel.value;
+  var month = parseInt(document.getElementById('profileBirthMonth').value);
+  var year = parseInt(document.getElementById('profileBirthYear').value) || 2000;
+  var daysSel = document.getElementById('profileBirthDay');
+  var prevVal = daysSel.value;
 
   // Days in month
-  let maxDays = 31;
+  var maxDays = 31;
   if ([4,6,9,11].includes(month)) maxDays = 30;
   else if (month === 2) {
     maxDays = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
   }
 
   daysSel.innerHTML = '<option value="">日</option>';
-  for (let d = 1; d <= maxDays; d++) {
-    const opt = document.createElement('option');
+  for (var d = 1; d <= maxDays; d++) {
+    var opt = document.createElement('option');
     opt.value = d;
     opt.textContent = d + ' 日';
     daysSel.appendChild(opt);
